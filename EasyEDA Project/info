@@ -1,0 +1,342 @@
+{
+  "uuid": "320d48e0c53129fa8025980d82841b11",
+  "path": "Offline/ETS2ButtonBox",
+  "name": "ETS2ButtonBox",
+  "content": "",
+  "created_at": "2021-04-28 18:24:42",
+  "updated_at": "2021-05-04 14:48:21",
+  "stick": "",
+  "documents": [
+    {
+      "uuid": "b1e9185a868b9f666338d1f84be143de",
+      "title": "ETS2 Button Box",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "293ce3e2836ee2e31c349a297b042a62": 8,
+        "ca94110f4544769d36adda4b0515e409": 3,
+        "9386d776ad1881e0718a6fa711cc746d": 5,
+        "77d44a4d217d0e61bbba7ea503d814a3": 4,
+        "3e32743454314abfa7a3b072b0f70c1d": 1,
+        "342564151e8e4263aad416ea5c4e96a6": 1,
+        "6209bffd4cc843caadb4789798c3f112": 2,
+        "759c7d15a31446c4bfbc1edbae5cd074": 1,
+        "fa33d4808b42d46b96893a5da4a98304": 1,
+        "81ba4f7142e353a27e69273c9b0ee82a": 1,
+        "6120522a8db139790c57da44f34e914a": 1,
+        "320400870eb297eb1df26973a3a5a9f4": 1,
+        "2e83b68c877909257b07a0358bddc1b8": 1,
+        "569972a699f76c4fd1fd6f0fa24242d6": 4,
+        "5947d2fa634203d12e59fdfcf9e29a4e": 9,
+        "6c71cc35555d4db78b35d5f358f11fcd": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "12MHz",
+          1,
+          "OSC-SMD_4P-L3.2-W2.5-BL",
+          "X1",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "YXC",
+            "BOM_Manufacturer Part": "X322512MSB4SI",
+            "BOM_Supplier Part": "C9002",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "3665faf5c7824047877c19fd71b91289",
+            "uuid": "2e83b68c877909257b07a0358bddc1b8"
+          }
+        ],
+        [
+          "Button Connector Bank",
+          1,
+          "BUTTON CONNECTION BANK",
+          "CST1",
+          {
+            "BOM_Manufacturer": "",
+            "BOM_Manufacturer Part": "",
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "puuid": "2de30498c9e54441ab20e5b98fc42236",
+            "uuid": "3e32743454314abfa7a3b072b0f70c1d"
+          }
+        ],
+        [
+          "SPI_Header",
+          1,
+          "ISP_HEADER",
+          "SPI",
+          {
+            "BOM_Manufacturer": "",
+            "BOM_Manufacturer Part": "",
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "puuid": "5da5d801f5c14caca87deab42126251a",
+            "uuid": "6c71cc35555d4db78b35d5f358f11fcd"
+          }
+        ],
+        [
+          "74HC595D,118",
+          4,
+          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
+          "U5,U6,U3,U4",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "Nexperia",
+            "BOM_Manufacturer Part": "74HC595D,118",
+            "BOM_Supplier Part": "C5947",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "bc30752f83694054baa42649cbb6b7d0",
+            "uuid": "77d44a4d217d0e61bbba7ea503d814a3"
+          }
+        ],
+        [
+          "4.7uF",
+          1,
+          "C0402",
+          "C2",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer Part": "CL05A475MP5NRNC",
+            "BOM_Manufacturer": "SAMSUNG",
+            "BOM_Supplier Part": "C23733",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
+            "uuid": "81ba4f7142e353a27e69273c9b0ee82a"
+          }
+        ],
+        [
+          "1K",
+          8,
+          "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
+          "RN7,RN1,RN6,RN8,RN2,RN3,RN5,RN4",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "UniOhm",
+            "BOM_Manufacturer Part": "4D02WGJ0102TCE",
+            "BOM_Supplier Part": "C25726",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "37d8bc5691574cc580abf6089e86850d",
+            "uuid": "293ce3e2836ee2e31c349a297b042a62"
+          }
+        ],
+        [
+          "UX60A-MB-5ST",
+          1,
+          "USB-MINI-SMD_UX60A-MB-5ST",
+          "USB",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Supplier Part": "C719028",
+            "BOM_Manufacturer": "HRS(Hirose)",
+            "BOM_Manufacturer Part": "UX60A-MB-5ST",
+            "BOM_Paste Type": "expand",
+            "puuid": "1cecf805f9e04bff9e9189fdeb0f6996",
+            "uuid": "759c7d15a31446c4bfbc1edbae5cd074"
+          }
+        ],
+        [
+          "10K",
+          9,
+          "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
+          "RN15,RN11,RN10,RN12,RN17,RN16,RN9,RN13,RN14",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "UniOhm",
+            "BOM_Manufacturer Part": "4D02WGJ0103TCE",
+            "BOM_Supplier Part": "C25725",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "37d8bc5691574cc580abf6089e86850d",
+            "uuid": "5947d2fa634203d12e59fdfcf9e29a4e"
+          }
+        ],
+        [
+          "Connection Pad",
+          2,
+          "CONNECTION PAD",
+          "U13,U14",
+          {
+            "BOM_Manufacturer": "",
+            "BOM_Manufacturer Part": "",
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "puuid": "63cd1ae5b3f8412aaa1d5663f646bdb9",
+            "uuid": "6209bffd4cc843caadb4789798c3f112"
+          }
+        ],
+        [
+          "74HC165D,653",
+          5,
+          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
+          "U10,U11,U9,U8,U7",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "Nexperia",
+            "BOM_Manufacturer Part": "74HC165D,653",
+            "BOM_Supplier Part": "C5613",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "bc30752f83694054baa42649cbb6b7d0",
+            "uuid": "9386d776ad1881e0718a6fa711cc746d"
+          }
+        ],
+        [
+          "10pF",
+          4,
+          "C0402",
+          "C6,C5,C7,C8",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "SAMSUNG",
+            "BOM_Manufacturer Part": "CL05C100JB5NNNC",
+            "BOM_Supplier Part": "C32949",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
+            "uuid": "569972a699f76c4fd1fd6f0fa24242d6"
+          }
+        ],
+        [
+          "CH340G",
+          1,
+          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-TL",
+          "U1",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "WCH",
+            "BOM_Manufacturer Part": "CH340G",
+            "BOM_Supplier Part": "C14267",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "57bde458a1df48daae5091ee0fe1d27c",
+            "uuid": "6120522a8db139790c57da44f34e914a"
+          }
+        ],
+        [
+          "16MHz",
+          1,
+          "OSC-SMD_4P-L3.2-W2.5-BL",
+          "X2",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "YXC",
+            "BOM_Manufacturer Part": "X322516MLB4SI",
+            "BOM_Supplier Part": "C13738",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "3665faf5c7824047877c19fd71b91289",
+            "uuid": "320400870eb297eb1df26973a3a5a9f4"
+          }
+        ],
+        [
+          "LED Connector Bank",
+          1,
+          "LED CONNECTOR BANK",
+          "CST2",
+          {
+            "BOM_Manufacturer": "",
+            "BOM_Manufacturer Part": "",
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "puuid": "ae50020f4ae34830b375aff54fef553f",
+            "uuid": "342564151e8e4263aad416ea5c4e96a6"
+          }
+        ],
+        [
+          "100nF",
+          3,
+          "C0402",
+          "C9,C1,C4",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer Part": "CL05B104KO5NNNC",
+            "BOM_Manufacturer": "SAMSUNG",
+            "BOM_Supplier Part": "C1525",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
+            "uuid": "ca94110f4544769d36adda4b0515e409"
+          }
+        ],
+        [
+          "ATMEGA328P-AU",
+          1,
+          "TQFP-32_L7.0-W7.0-P0.80-LS9.0-BL",
+          "U2",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "MICROCHIP",
+            "BOM_Manufacturer Part": "ATMEGA328P-AU",
+            "BOM_Supplier Part": "C14877",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "9c6dab9dc91e4b929269cb3454d6d713",
+            "uuid": "fa33d4808b42d46b96893a5da4a98304"
+          }
+        ]
+      ],
+      "updateTime": 1620132501,
+      "createTime": 1619627103,
+      "histories": [],
+      "created_at": "2021-04-28 18:25:03",
+      "updated_at": "2021-05-04 14:48:21"
+    },
+    {
+      "uuid": "895efa7dce07f1d05394f0d7a682a7b4",
+      "puuid": "320d48e0c53129fa8025980d82841b11",
+      "title": "PCB_ETS2ButtonBox",
+      "filename": "PCB_ETS2ButtonBox.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "5da5d801f5c14caca87deab42126251a": 1,
+        "bc30752f83694054baa42649cbb6b7d0": 9,
+        "2de30498c9e54441ab20e5b98fc42236": 1,
+        "ae50020f4ae34830b375aff54fef553f": 1,
+        "37d8bc5691574cc580abf6089e86850d": 17,
+        "f8eca159cd18407f9d5df374a1c2badf": 8,
+        "9c6dab9dc91e4b929269cb3454d6d713": 1,
+        "63cd1ae5b3f8412aaa1d5663f646bdb9": 2,
+        "1cecf805f9e04bff9e9189fdeb0f6996": 1,
+        "3665faf5c7824047877c19fd71b91289": 2,
+        "57bde458a1df48daae5091ee0fe1d27c": 1
+      },
+      "BOM": [],
+      "updateTime": 1620132489,
+      "createTime": 1619627364,
+      "histories": [],
+      "created_at": "2021-04-28 18:29:24",
+      "updated_at": "2021-05-04 14:48:09"
+    }
+  ],
+  "sort": [],
+  "title": "ETS2ButtonBox",
+  "foldername": "ETS2ButtonBox",
+  "schfilename": "ETS2ButtonBox.json",
+  "schfilemtime": 1620132501428
+}
