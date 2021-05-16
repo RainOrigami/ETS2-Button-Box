@@ -159,12 +159,6 @@ namespace ETS2_Button_Box_Host
         /// <param name="led">LED to disable</param>
         private void disableLed(LED led)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => disableLED(led)));
-                return;
-            }
-
             lock (this.ledStates)
                 this.ledStates[led] = false;
         }
@@ -176,12 +170,6 @@ namespace ETS2_Button_Box_Host
         /// <param name="led">LED to enable</param>
         private void enableLed(LED led)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => enableLED(led)));
-                return;
-            }
-
             lock (this.ledStates)
                 this.ledStates[led] = true;
         }
@@ -193,12 +181,6 @@ namespace ETS2_Button_Box_Host
         /// <param name="led">LED to toggle</param>
         private void toggleLed(LED led)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => toggleLED(led)));
-                return;
-            }
-
             lock (this.ledStates)
                 this.ledStates[led] = !this.ledStates[led];
         }
@@ -377,13 +359,6 @@ namespace ETS2_Button_Box_Host
             if (timeSinceLastLEDStatusSend.TotalMilliseconds < ledSendInterval)
                 await Task.Delay((int)(ledSendInterval - timeSinceLastLEDStatusSend.TotalMilliseconds));
 
-            // Invoke process on main thread
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(async () => await writeLEDStates()));
-                return;
-            }
-
             // Send LED state to button box
 #if DEBUG
             string ledStateString = this.getLEDStateString();
@@ -399,6 +374,11 @@ namespace ETS2_Button_Box_Host
         /// Build the LED state string that is being sent to the button box
         /// </summary>
         /// <returns>String of 0 or 1 for each available LED</returns>
+        private string getLedStateString()
+        {
+            lock (this.ledStates)
+                return String.Join("", Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).Select(led => this.ledStates[led] ? "1" : "0"));
+        }
 
         /// <summary>
         /// Reload COM ports button click handler
