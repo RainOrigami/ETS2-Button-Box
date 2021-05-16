@@ -6,114 +6,88 @@
 			All non-arduino files created by visual micro and all visual studio project or solution files can be freely deleted and are not required to compile a sketch (do not delete your own code!).
 			Note: debugger breakpoints are stored in '.sln' or '.asln' files, knowledge of last uploaded breakpoints is stored in the upload.vmps.xml file. Both files are required to continue a previous debug session without needing to compile and upload again
 	
-	Hardware: Generic ESP8266 Module, Platform=esp8266, Package=esp8266
+	Hardware: ATmega328P (Old Bootloader) (Arduino Nano), Platform=avr, Package=arduino
 */
 
 #if defined(_VMICRO_INTELLISENSE)
 
 #ifndef _VSARDUINO_H_
 #define _VSARDUINO_H_
-#define __ESP8266_esp8266__
-#define __ESP8266_ESP8266__
-#define __ets__
-#define ICACHE_FLASH
-#define NONOSDK22x_190703 1
-#define F_CPU 80000000L
-#define LWIP_OPEN_SRC
-#define TCP_MSS 536
-#define LWIP_FEATURES 1
-#define LWIP_IPV6 0
+#define __AVR_atmega328p__
+#define __AVR_ATmega328P__
+#define __AVR_ATmega328p__
+#define _VMDEBUG 1
+#define F_CPU 16000000L
 #define ARDUINO 108013
-#define ARDUINO_ESP8266_GENERIC
-#define ARDUINO_ARCH_ESP8266
-#define LED_BUILTIN 2
-#define FLASHMODE_DOUT
-#define ESP8266
+#define ARDUINO_AVR_NANO
+#define ARDUINO_ARCH_AVR
 #define __cplusplus 201103L
+#define _Pragma(x)
+#define __AVR__
+#define __inline__
+#define __asm__(...)
+#define __extension__
+#define __inline__
+#define __volatile__
+// Redefine __cplusplus to correct version: https://www.visualmicro.com/forums/YaBB.pl?num=1592217268
 #undef __cplusplus
 #define __cplusplus 201103L
-#define __STDC__
-#define __ARM__
-#define __arm__
-#define __inline__
-#define __asm__(x)
-#define __asm__
-#define __extension__
-#define __ATTR_PURE__
-#define __ATTR_CONST__
-#define __volatile__
+
+//#define GCC_VERSION 40902
+//https://www.visualmicro.com/forums/YaBB.pl?num=1569762585/5#5
+#define __GNUC__             5
+#define __GNUC_MINOR__       4
+#define __GNUC_PATCHLEVEL__  0
+#define GCC_VERSION ((__GNUC__*10000)+(__GNUC_MINOR__*100)+__GNUC_PATCHLEVEL__)) 
 
 
-#define __ASM
-#define __INLINE
-#define __attribute__(noinline)
-
-//#define _STD_BEGIN
-//#define EMIT
-#define WARNING
-#define _Lockit
-#define __CLR_OR_THIS_CALL
-#define C4005
-#define _NEW
-
-//typedef int uint8_t;
-//#define __ARMCC_VERSION 400678
-//#define PROGMEM
-//#define string_literal
-//
-//#define prog_void
-//#define PGM_VOID_P int
-//
-
-typedef int _read;
-typedef int _seek;
-typedef int _write;
-typedef int _close;
-typedef int __cleanup;
-
-//#define inline 
-
-#define __builtin_clz
-#define __builtin_clzl
-#define __builtin_clzll
-#define __builtin_labs
-#define __builtin_va_list
-typedef int __gnuc_va_list;
-
-#define __ATOMIC_ACQ_REL
-
-#define __CHAR_BIT__
-#define _EXFUN()
-
-typedef unsigned char byte;
-extern "C" void __cxa_pure_virtual() {;}
+#define volatile(va_arg) 
+#define _CONST
+#define __builtin_va_start
+#define __builtin_va_end
+#define __attribute__(...)
+#define NOINLINE __attribute__((noinline))
+#define prog_void
+#define PGM_VOID_P int
 
 
-typedef long __INTPTR_TYPE__ ;
-typedef long __UINTPTR_TYPE__ ;
-typedef long __SIZE_TYPE__ 	;
-typedef long __PTRDIFF_TYPE__;
+#ifndef __builtin_constant_p
+	#define __builtin_constant_p __attribute__((__const__))
+#endif
+#ifndef __builtin_strlen
+	#define __builtin_strlen  __attribute__((__const__))
+#endif
 
 
-#include "new"
-#include "Esp.h"
+#define NEW_H
+typedef void *__builtin_va_list;
+//extern "C" void __cxa_pure_virtual() {;}
+
+typedef int div_t;
+typedef int ldiv_t;
+
+
+typedef void *__builtin_va_list;
+//extern "C" void __cxa_pure_virtual() {;}
+
 
 
 #include "arduino.h"
-#include <common.h> 
 #include <pins_arduino.h> 
-
-#include "..\generic\Common.h"
-#include "..\generic\pins_arduino.h"
-
-#undef F
-#define F(string_literal) ((const PROGMEM char *)(string_literal))
+//#undef F
+//#define F(string_literal) ((const PROGMEM char *)(string_literal))
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))
-//current vc++ does not understand this syntax so use older arduino example for intellisense
-//todo:move to the new clang/gcc project types.
-#define interrupts() sei()
-#define noInterrupts() cli()
+
+//typedef unsigned char uint8_t;
+//typedef unsigned int uint8_t;
+
+#define pgm_read_byte_near(address_short) uint8_t()
+#define pgm_read_byte(address_short) uint8_t() 
+#define pgm_read_word(address_short) uint16_t() 
+#define pgm_read_dword(address_short) uint32_t()
+#define pgm_read_float(address_short) float()
+#define pgm_read_ptr(address_short)   short()
 
 #include "ETS2 Button Box Arduino.ino"
 #endif
