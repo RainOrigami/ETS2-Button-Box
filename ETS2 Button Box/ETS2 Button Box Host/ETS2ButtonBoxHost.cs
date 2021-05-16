@@ -199,6 +199,17 @@ namespace ETS2_Button_Box_Host
         }
 
         /// <summary>
+        /// Reset all LEDs except the specified ones
+        /// </summary>
+        /// <param name="leds">Which LEDs not to reset</param>
+        private void resetLedsExcept(params LED[] leds)
+        {
+            foreach (LED led in Enum.GetValues(typeof(LED)))
+                if (!leds.Contains(led))
+                    disableLed(led);
+        }
+
+        /// <summary>
         /// ETS2 SDK data has been received
         /// </summary>
         private void telemetry_Data(SCSSdkClient.Object.SCSTelemetry data, bool newTimestamp)
@@ -357,12 +368,20 @@ namespace ETS2_Button_Box_Host
                     return;
                 }
 
-                // Handle blinking all LEDs in (RunMode.Connected | RunMode.Inactive) mode
+                // Handle LEDs in (RunMode.Connected | RunMode.Inactive) mode
                 if ((this.runMode & RunMode.Connected) != 0 && (this.runMode & RunMode.Active) == 0)
                 {
+                    // Reset all LEDs except INDH
+                    this.resetLedsExcept(LED.INDH);
+
+                    // Enable PWR to show powered state
+                    this.enableLed(LED.PWR);
+
                     // Wait for LED blink timeout
                     if ((DateTime.Now - this.inactiveLedLastBlinkTime).TotalMilliseconds >= ledBlinkTimeout)
                     {
+                        // Toggle LED INDH to show connection to button box but no connection to SDK
+                        this.toggleLed(LED.INDH);
 
                         // Set last inactive LED toggle time to now
                         this.inactiveLedLastBlinkTime = DateTime.Now;
