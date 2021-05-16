@@ -208,12 +208,30 @@ void writeLEDs() {
 #pragma endregion
 
 #pragma region Serial
+unsigned long lastReceiveTime = 0;
+#define RECEIVETIMEOUT 2000
+
 void handleLedFromSerial() {
 	// Read serial data until the delimiter character is reached
 	String data = Serial.readStringUntil('\x00');
 	if (data.length() == 0)
-		return;
+	{
+		// Check if no data has been received for longer than the timeout
+		if (millis() - lastReceiveTime > RECEIVETIMEOUT)
+		{
+			// Reset all LEDs
+			resetLEDs();
 
+			// Turn on PWR and IND_H LED to show button box is powered and ready for connection
+			enableLED(&leds[LED_PWR]);
+			enableLED(&leds[LED_IND_H]);
+		}
+		return;
+	}
+
+	// Set last receive time for timeout
+	lastReceiveTime = millis();
+	
 	// data contains a string of 0 and 1 in order of the LED enum as per host application
 	
 	// Check that received data is of equal length as the LED IO definitions
