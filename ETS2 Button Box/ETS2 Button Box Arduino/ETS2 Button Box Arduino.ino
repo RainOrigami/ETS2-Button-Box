@@ -24,21 +24,22 @@ struct IO_DEFINITION {
 };
 
 // IO definitions for accessing LEDs using MCP23017
-	{ &mcp1, 0 },	// LED_CC
-	{ &mcp1, 1 },	// LED_GR
-	{ &mcp1, 2 },	// LED_DIF
-	{ &mcp1, 3 },	// LED_IND_L
-	{ &mcp1, 4 },	// LED_IND_R
-	{ &mcp1, 5 },	// LED_IND_H
-	{ &mcp1, 6 },	// LED_BR
-	{ &mcp1, 7 },	// LED_RET
-	{ &mcp1, 8 },	// LED_ENB
-	{ &mcp1, 9 },	// LED_EB
-	{ &mcp1, 10 },	// LED_TOW
-	{ &mcp1, 11 },	// LED_HRN
-	{ &mcp1, 12 },	// LED_SCR
+// Note: The order must be equal to the corresponding values of the LED enum of the host application
 IO_DEFINITION leds[] = {
 	{ &mcp1, 13 },	// LED_FLS
+	{ &mcp1, 12 },	// LED_SCR
+	{ &mcp1, 11 },	// LED_HRN
+	{ &mcp1, 10 },	// LED_TOW
+	{ &mcp1, 9 },	// LED_EB
+	{ &mcp1, 8 },	// LED_ENB
+	{ &mcp1, 7 },	// LED_RET
+	{ &mcp1, 6 },	// LED_BR
+	{ &mcp1, 5 },	// LED_IND_H
+	{ &mcp1, 4 },	// LED_IND_R
+	{ &mcp1, 3 },	// LED_IND_L
+	{ &mcp1, 2 },	// LED_DIF
+	{ &mcp1, 1 },	// LED_GR
+	{ &mcp1, 0 },	// LED_CC
 	{ &mcp1, 14 },	// LED_PWR
 	{ &mcp1, 15 },	// LED_ENG
 	{ &mcp2, 0 },	// LED_EF
@@ -81,20 +82,20 @@ IO_DEFINITION buttons[] = {
 };
 
 // Note: These indices must be equal to the corresponding values of the LED enum of the host application
-#define LED_CC 0
-#define LED_GR 1
-#define LED_DIF 2
-#define LED_IND_L 3
-#define LED_IND_R 4
-#define LED_IND_H 5
-#define LED_BR 6
-#define LED_RET 7
-#define LED_ENB 8
-#define LED_EB 9
-#define LED_TOW 10
-#define LED_HRN 11
-#define LED_SCR 12
-#define LED_FLS 13
+#define LED_FLS 0
+#define LED_SCR 1
+#define LED_HRN 2
+#define LED_TOW 3
+#define LED_EB 4
+#define LED_ENB 5
+#define LED_RET 6
+#define LED_BR 7
+#define LED_IND_H 8
+#define LED_IND_R 9
+#define LED_IND_L 10
+#define LED_DIF 11
+#define LED_GR 12
+#define LED_CC 13
 #define LED_PWR 14
 #define LED_ENG 15
 #define LED_EF 16
