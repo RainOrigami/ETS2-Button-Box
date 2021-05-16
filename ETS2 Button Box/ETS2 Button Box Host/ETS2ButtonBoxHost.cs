@@ -93,7 +93,7 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Stores the time of the last time the LED status was sent to the button box
         /// </summary>
-        private DateTime lastLEDStatusSendTime;
+        private DateTime lastLedStatusSendTime;
 
         /// <summary>
         /// Stores the time of the last time the fuel LED has toggled in low fuel state
@@ -117,7 +117,7 @@ namespace ETS2_Button_Box_Host
             this.inactiveLedLastBlinkTime = DateTime.Now;
 
             // Initialise last LED status time to the current time
-            this.lastLEDStatusSendTime = DateTime.Now;
+            this.lastLedStatusSendTime = DateTime.Now;
 
             // Initialise last fuel warning LED time to current time
             this.lastFuelWarningTime = DateTime.Now;
@@ -146,10 +146,10 @@ namespace ETS2_Button_Box_Host
         /// Disables all LEDs.
         /// This has no effect until writeLEDStates is called.
         /// </summary>
-        private void resetLEDs()
+        private void resetLeds()
         {
             foreach (LED led in Enum.GetValues(typeof(LED)))
-                disableLED(led);
+                disableLed(led);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace ETS2_Button_Box_Host
         /// This has no effect until writeLEDStates is called.
         /// </summary>
         /// <param name="led">LED to disable</param>
-        private void disableLED(LED led)
+        private void disableLed(LED led)
         {
             if (this.InvokeRequired)
             {
@@ -174,7 +174,7 @@ namespace ETS2_Button_Box_Host
         /// This has no effect until writeLEDStates is called.
         /// </summary>
         /// <param name="led">LED to enable</param>
-        private void enableLED(LED led)
+        private void enableLed(LED led)
         {
             if (this.InvokeRequired)
             {
@@ -191,7 +191,7 @@ namespace ETS2_Button_Box_Host
         /// This has no effect until writeLEDStates is called.
         /// </summary>
         /// <param name="led">LED to toggle</param>
-        private void toggleLED(LED led)
+        private void toggleLed(LED led)
         {
             if (this.InvokeRequired)
             {
@@ -235,15 +235,15 @@ namespace ETS2_Button_Box_Host
             
             // When no fuel warning occurs set F0 LED fixed on
             if (!this.isFuelWarning)
-                this.enableLED(LED.F0);
+                this.enableLed(LED.F0);
 
             // Set individual F1-F10 LEDs based on the fuelLedThreshold
             foreach (int threshold in fuelLedThreshold.Keys)
             {
                 if (fuelPercentage > threshold)
-                    this.enableLED(fuelLedThreshold[threshold]);
+                    this.enableLed(fuelLedThreshold[threshold]);
                 else
-                    this.disableLED(fuelLedThreshold[threshold]);
+                    this.disableLed(fuelLedThreshold[threshold]);
             }
         }
 
@@ -328,9 +328,6 @@ namespace ETS2_Button_Box_Host
                     // Wait for LED blink timeout
                     if ((DateTime.Now - this.inactiveLedLastBlinkTime).TotalMilliseconds >= ledBlinkTimeout)
                     {
-                        // Toggle all LEDs
-                        foreach (LED led in this.ledStates.Keys.ToArray())
-                            this.toggleLED(led);
 
                         // Set last inactive LED toggle time to now
                         this.inactiveLedLastBlinkTime = DateTime.Now;
@@ -340,20 +337,20 @@ namespace ETS2_Button_Box_Host
                 {
                     if (this.isFuelWarning)
                     {
-                        this.disableLED(LED.F1);
-                        this.disableLED(LED.F2);
-                        this.disableLED(LED.F3);
-                        this.disableLED(LED.F4);
-                        this.disableLED(LED.F5);
-                        this.disableLED(LED.F6);
-                        this.disableLED(LED.F7);
-                        this.disableLED(LED.F8);
-                        this.disableLED(LED.F9);
-                        this.disableLED(LED.F10);
+                        this.disableLed(LED.F1);
+                        this.disableLed(LED.F2);
+                        this.disableLed(LED.F3);
+                        this.disableLed(LED.F4);
+                        this.disableLed(LED.F5);
+                        this.disableLed(LED.F6);
+                        this.disableLed(LED.F7);
+                        this.disableLed(LED.F8);
+                        this.disableLed(LED.F9);
+                        this.disableLed(LED.F10);
 
                         if ((DateTime.Now - this.lastFuelWarningTime).TotalMilliseconds >= ledBlinkTimeout)
                         {
-                            this.toggleLED(LED.F0);
+                            this.toggleLed(LED.F0);
                             this.lastFuelWarningTime = DateTime.Now;
                         }
                     }
@@ -376,7 +373,7 @@ namespace ETS2_Button_Box_Host
                 return;
 
             // Wait, if necessary, for the next ledSendInterval
-            TimeSpan timeSinceLastLEDStatusSend = DateTime.Now - this.lastLEDStatusSendTime;
+            TimeSpan timeSinceLastLEDStatusSend = DateTime.Now - this.lastLedStatusSendTime;
             if (timeSinceLastLEDStatusSend.TotalMilliseconds < ledSendInterval)
                 await Task.Delay((int)(ledSendInterval - timeSinceLastLEDStatusSend.TotalMilliseconds));
 
@@ -395,14 +392,13 @@ namespace ETS2_Button_Box_Host
 #else
             this.buttonBoxPort.Write($"{this.getLEDStateString()}{delimiter}");
 #endif
-            this.lastLEDStatusSendTime = DateTime.Now;
+            this.lastLedStatusSendTime = DateTime.Now;
         }
 
         /// <summary>
         /// Build the LED state string that is being sent to the button box
         /// </summary>
         /// <returns>String of 0 or 1 for each available LED</returns>
-        private string getLEDStateString() => String.Join("", Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).Select(led => this.ledStates[led] ? "1" : "0"));
 
         /// <summary>
         /// Reload COM ports button click handler
