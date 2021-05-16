@@ -214,6 +214,9 @@ namespace ETS2_Button_Box_Host
                 // Enable Active run mode
                 this.runMode |= RunMode.Active;
 
+                // Reset LEDs
+                this.resetLeds();
+
                 // Enable the LED scheduler
                 if ((this.runMode & RunMode.Scheduler) == 0)
                     Task.Run(ledScheduler);
@@ -343,6 +346,7 @@ namespace ETS2_Button_Box_Host
         private async void ledScheduler()
         {
             this.runMode |= RunMode.Scheduler;
+            this.resetLeds();
 
             while (true)
             {
