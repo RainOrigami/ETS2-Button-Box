@@ -168,6 +168,13 @@ void disableLED(IO_DEFINITION* def) {
 	(*def).enabled = false;
 	//(*(*def).mcp).digitalWrite((*def).pin, LOW);
 }
+
+/// <summary>
+/// Disables all LEDs
+/// </summary>
+void resetLEDs() {
+	for (size_t i = 0; i < sizeof(leds) / sizeof(IO_DEFINITION); i++)
+		disableLED(&leds[i]);
 }
 
 /// <summary>
@@ -208,14 +215,13 @@ void handleLedFromSerial() {
 		return;
 
 	// data contains a string of 0 and 1 in order of the LED enum as per host application
-
+	
 	// Check that received data is of equal length as the LED IO definitions
 	if (sizeof(leds) / sizeof(IO_DEFINITION) != data.length())
 	{
 		// Either less or more LEDs have been sent over serial
 		// To indicate this error to the user we will disable all LEDs...
-		for (size_t i = 0; i < sizeof(leds) / sizeof(IO_DEFINITION); i++)
-			disableLED(&leds[i]);
+		resetLEDs();
 
 		// ...and only enable PWR and EF to show a fault and IND_L to show an LED data mismatch failure
 		enableLED(&leds[LED_PWR]);
