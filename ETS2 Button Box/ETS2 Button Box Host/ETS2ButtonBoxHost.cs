@@ -361,13 +361,7 @@ namespace ETS2_Button_Box_Host
                 await Task.Delay((int)(ledSendInterval - timeSinceLastLEDStatusSend.TotalMilliseconds));
 
             // Send LED state to button box
-#if DEBUG
-            string ledStateString = this.getLEDStateString();
-            Console.WriteLine($"Sending {ledStateString}");
-            this.buttonBoxPort.Write($"{ledStateString}{delimiter}");
-#else
-            this.buttonBoxPort.Write($"{this.getLEDStateString()}{delimiter}");
-#endif
+            this.buttonBoxPort.Write($"{this.getLedStateString()}{delimiter}");
             this.lastLedStatusSendTime = DateTime.Now;
         }
 
