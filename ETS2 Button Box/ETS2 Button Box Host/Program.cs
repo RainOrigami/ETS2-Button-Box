@@ -16,7 +16,7 @@ namespace ETS2_Button_Box_Host
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new ETS2ButtonBoxHost());
         }
     }
 }

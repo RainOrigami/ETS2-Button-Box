@@ -1,0 +1,18 @@
+﻿using SCSSdkClient;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO.Ports;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ETS2_Button_Box_Host
+{
+    public partial class ETS2ButtonBoxHost : Form
+    {
+    }
+}
