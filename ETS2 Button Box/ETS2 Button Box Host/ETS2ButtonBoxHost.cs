@@ -193,11 +193,12 @@ namespace ETS2_Button_Box_Host
             // Check for SDK connection to a game instance
             if (!data.SdkActive)
             {
-                // Disable Active and set Inactive run mode
+                // Disable Active run mode
                 this.runMode &= ~RunMode.Active;
             }
             else if ((this.runMode & RunMode.Active) == 0)
             {
+                // Enable Active run mode
                 this.runMode |= RunMode.Active;
 
                 // Enable the LED scheduler
@@ -211,10 +212,10 @@ namespace ETS2_Button_Box_Host
 
             // Calculate percentage of fuel
             int fuelPercentage = (int)Math.Round(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount / data.TruckValues.ConstantsValues.CapacityValues.Fuel * 100f);
-            
+
             // Get fuel warning indicator
             this.isFuelWarning = data.TruckValues.CurrentValues.DashboardValues.WarningValues.FuelW;
-            
+
             // When no fuel warning occurs set F0 LED fixed on
             if (!this.isFuelWarning)
                 this.enableLed(LED.F0);
