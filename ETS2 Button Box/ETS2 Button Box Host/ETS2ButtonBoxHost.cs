@@ -186,6 +186,19 @@ namespace ETS2_Button_Box_Host
         }
 
         /// <summary>
+        /// Sets the state of an LED
+        /// </summary>
+        /// <param name="led">Which LED to change the status of</param>
+        /// <param name="enabled">true to enable LED, false to disable LED</param>
+        private void setLedState(LED led, bool enabled)
+        {
+            if (enabled)
+                enableLed(led);
+            else
+                disableLed(led);
+        }
+
+        /// <summary>
         /// ETS2 SDK data has been received
         /// </summary>
         private void telemetry_Data(SCSSdkClient.Object.SCSTelemetry data, bool newTimestamp)
@@ -217,7 +230,7 @@ namespace ETS2_Button_Box_Host
             this.isFuelWarning = data.TruckValues.CurrentValues.DashboardValues.WarningValues.FuelW;
 
             // When no fuel warning occurs set F0 LED fixed on
-            if (!this.isFuelWarning)
+            if (!this.isFuelWarning && data.TruckValues.ConstantsValues.CapacityValues.Fuel > 0)
                 this.enableLed(LED.F0);
 
             // Set individual F1-F10 LEDs based on the fuelLedThreshold
@@ -228,6 +241,41 @@ namespace ETS2_Button_Box_Host
                 else
                     this.disableLed(fuelLedThreshold[threshold]);
             }
+
+            // Handle system power LED
+            this.setLedState(LED.PWR, data.TruckValues.CurrentValues.ElectricEnabled);
+
+            // Handle engine power LED
+            this.setLedState(LED.ENG, data.TruckValues.CurrentValues.EngineEnabled);
+
+            // Handle brake LED
+            this.setLedState(LED.BR, data.TruckValues.CurrentValues.LightsValues.Brake);
+
+            // Handle cruise control LED
+            this.setLedState(LED.CC, data.TruckValues.CurrentValues.DashboardValues.CruiseControl);
+
+            // Handle motor brake LED
+            this.setLedState(LED.ENB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake);
+
+            // Handle parking brake LED
+            this.setLedState(LED.EB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake);
+
+            // Handle retarder LED
+            this.setLedState(LED.RET, data.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel > 0);
+
+            // Handle engine fault LED
+            this.setLedState(LED.EF, data.TruckValues.CurrentValues.DamageValues.Engine > 0.25);
+
+            // Handle high beam/flashers LED
+            this.setLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh);
+
+            // Handle indicators
+            this.setLedState(LED.INDH, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn && data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
+            this.setLedState(LED.INDL, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn);
+            this.setLedState(LED.INDR, data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
+
+            // Handle trailer LED
+            this.setLedState(LED.TOW, data.TrailerValues.Any(t => t.Attached));
         }
 
         /// <summary>
