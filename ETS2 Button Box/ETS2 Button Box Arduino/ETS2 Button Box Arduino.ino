@@ -20,10 +20,10 @@ Adafruit_MCP23017 mcp3;
 struct IO_DEFINITION {
 	Adafruit_MCP23017* mcp;
 	uint8_t pin;
+	bool enabled;
 };
 
 // IO definitions for accessing LEDs using MCP23017
-const IO_DEFINITION leds[] = {
 	{ &mcp1, 0 },	// LED_CC
 	{ &mcp1, 1 },	// LED_GR
 	{ &mcp1, 2 },	// LED_DIF
@@ -37,6 +37,7 @@ const IO_DEFINITION leds[] = {
 	{ &mcp1, 10 },	// LED_TOW
 	{ &mcp1, 11 },	// LED_HRN
 	{ &mcp1, 12 },	// LED_SCR
+IO_DEFINITION leds[] = {
 	{ &mcp1, 13 },	// LED_FLS
 	{ &mcp1, 14 },	// LED_PWR
 	{ &mcp1, 15 },	// LED_ENG
@@ -56,7 +57,7 @@ const IO_DEFINITION leds[] = {
 
 // IO definitions for accessing buttons using MCP23017
 // Note: uses readButton(IO_DEFINITION* def)
-const IO_DEFINITION buttons[] = {
+IO_DEFINITION buttons[] = {
 	{ &mcp2, 12 },	// BTN_CCO
 	{ &mcp2, 13 },	// BTN_CCR
 	{ &mcp2, 14 },	// BTN_CCS1
@@ -153,16 +154,19 @@ const uint8_t BTN_ENG = A1;
 /// Enable an LED
 /// </summary>
 /// <param name="def">LED IO definition reference</param>
-void enableLED(const IO_DEFINITION* def) {
-	(*(*def).mcp).digitalWrite((*def).pin, HIGH);
+void enableLED(IO_DEFINITION* def) {
+	(*def).enabled = true;
+	//(*(*def).mcp).digitalWrite((*def).pin, HIGH);
 }
 
 /// <summary>
 /// Disable an LED
 /// </summary>
 /// <param name="def">LED IO definition reference</param>
-void disableLED(const IO_DEFINITION* def) {
-	(*(*def).mcp).digitalWrite((*def).pin, LOW);
+void disableLED(IO_DEFINITION* def) {
+	(*def).enabled = false;
+	//(*(*def).mcp).digitalWrite((*def).pin, LOW);
+}
 }
 
 /// <summary>
@@ -170,7 +174,7 @@ void disableLED(const IO_DEFINITION* def) {
 /// </summary>
 /// <param name="def">Button IO definition reference</param>
 /// <returns>true when button is pressed, false when released</returns>
-bool readButton(const IO_DEFINITION* def) {
+bool readButton(IO_DEFINITION* def) {
 	return !(*(*def).mcp).digitalRead((*def).pin);
 }
 
@@ -181,6 +185,17 @@ bool readButton(const IO_DEFINITION* def) {
 /// <returns>true when button is pressed, false when released</returns>
 bool readButton(const uint8_t pin) {
 	return !digitalRead(pin);
+}
+
+/// <summary>
+/// Write changes to LED states to the corresponding pins
+/// This is mainly for buffering changes until the end of
+/// the loop to prevent flashing LEDs when resetting and
+/// enabling LEDs in one loop.
+/// </summary>
+void writeLEDs() {
+	for (size_t i = 0; i < sizeof(leds) / sizeof(IO_DEFINITION); i++)
+		(*leds[i].mcp).digitalWrite(leds[i].pin, leds[i].enabled ? HIGH : LOW);
 }
 #pragma endregion
 
@@ -283,5 +298,7 @@ void loop() {
 	// TODO: make sure this doesn't take more than 100ms in total
 
 	handleLedFromSerial();
+
+	writeLEDs();
 }
 #pragma endregion
