@@ -4,7 +4,7 @@
   "name": "ETS2ButtonBox",
   "content": "",
   "created_at": "2021-04-28 18:24:42",
-  "updated_at": "2021-05-04 14:48:21",
+  "updated_at": "2021-05-21 17:50:05",
   "stick": "",
   "documents": [
     {
@@ -30,7 +30,8 @@
         "2e83b68c877909257b07a0358bddc1b8": 1,
         "569972a699f76c4fd1fd6f0fa24242d6": 4,
         "5947d2fa634203d12e59fdfcf9e29a4e": 9,
-        "6c71cc35555d4db78b35d5f358f11fcd": 1
+        "6c71cc35555d4db78b35d5f358f11fcd": 1,
+        "6acefd628231d8c58e316bd1ce6c7465": 1
       },
       "BOM": [
         [
@@ -69,6 +70,21 @@
             "BOM_Supplier": "",
             "puuid": "2de30498c9e54441ab20e5b98fc42236",
             "uuid": "3e32743454314abfa7a3b072b0f70c1d"
+          }
+        ],
+        [
+          "10nF",
+          1,
+          "C0402",
+          "C3",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer Part": "CL05B103KB5NNNC",
+            "BOM_Manufacturer": "SAMSUNG",
+            "BOM_Supplier Part": "C15195",
+            "BOM_JLCPCB Part Class": "Basic Part",
+            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
+            "uuid": "6acefd628231d8c58e316bd1ce6c7465"
           }
         ],
         [
@@ -123,7 +139,7 @@
           "1K",
           8,
           "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
-          "RN7,RN1,RN6,RN8,RN2,RN3,RN5,RN4",
+          "RN6,RN1,RN7,RN8,RN2,RN5,RN4,RN3",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "UniOhm",
@@ -155,7 +171,7 @@
           "10K",
           9,
           "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
-          "RN15,RN11,RN10,RN12,RN17,RN16,RN9,RN13,RN14",
+          "RN15,RN12,RN13,RN11,RN17,RN10,RN16,RN9,RN14",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "UniOhm",
@@ -186,7 +202,7 @@
           "74HC165D,653",
           5,
           "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
-          "U10,U11,U9,U8,U7",
+          "U9,U10,U8,U11,U7",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "Nexperia",
@@ -203,7 +219,7 @@
           "10pF",
           4,
           "C0402",
-          "C6,C5,C7,C8",
+          "C5,C7,C8,C6",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "SAMSUNG",
@@ -298,11 +314,11 @@
           }
         ]
       ],
-      "updateTime": 1620132501,
+      "updateTime": 1621612205,
       "createTime": 1619627103,
       "histories": [],
       "created_at": "2021-04-28 18:25:03",
-      "updated_at": "2021-05-04 14:48:21"
+      "updated_at": "2021-05-21 17:50:05"
     },
     {
       "uuid": "895efa7dce07f1d05394f0d7a682a7b4",
@@ -314,29 +330,29 @@
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
-        "5da5d801f5c14caca87deab42126251a": 1,
-        "bc30752f83694054baa42649cbb6b7d0": 9,
-        "2de30498c9e54441ab20e5b98fc42236": 1,
-        "ae50020f4ae34830b375aff54fef553f": 1,
-        "37d8bc5691574cc580abf6089e86850d": 17,
-        "f8eca159cd18407f9d5df374a1c2badf": 8,
-        "9c6dab9dc91e4b929269cb3454d6d713": 1,
+        "57bde458a1df48daae5091ee0fe1d27c": 1,
         "63cd1ae5b3f8412aaa1d5663f646bdb9": 2,
-        "1cecf805f9e04bff9e9189fdeb0f6996": 1,
+        "37d8bc5691574cc580abf6089e86850d": 17,
+        "f8eca159cd18407f9d5df374a1c2badf": 9,
         "3665faf5c7824047877c19fd71b91289": 2,
-        "57bde458a1df48daae5091ee0fe1d27c": 1
+        "1cecf805f9e04bff9e9189fdeb0f6996": 1,
+        "bc30752f83694054baa42649cbb6b7d0": 9,
+        "9c6dab9dc91e4b929269cb3454d6d713": 1,
+        "ae50020f4ae34830b375aff54fef553f": 1,
+        "2de30498c9e54441ab20e5b98fc42236": 1,
+        "5da5d801f5c14caca87deab42126251a": 1
       },
       "BOM": [],
-      "updateTime": 1620132489,
+      "updateTime": 1621611998,
       "createTime": 1619627364,
       "histories": [],
       "created_at": "2021-04-28 18:29:24",
-      "updated_at": "2021-05-04 14:48:09"
+      "updated_at": "2021-05-21 17:46:38"
     }
   ],
   "sort": [],
   "title": "ETS2ButtonBox",
   "foldername": "ETS2ButtonBox",
   "schfilename": "ETS2ButtonBox.json",
-  "schfilemtime": 1620132501428
+  "schfilemtime": 1621612205402
 }
