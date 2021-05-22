@@ -14,115 +14,123 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Flasher (momentary high beam)
         /// </summary>
-        FLS,
+        FLS = 22,
         /// <summary>
         /// Screamer (Loud horns)
         /// </summary>
-        SCR,
+        SCR = 20,
         /// <summary>
         /// Horns (Normal horns)
         /// </summary>
-        HRN,
+        HRN = 18,
         /// <summary>
         /// Trailer connection status
         /// </summary>
-        TOW,
+        TOW = 16,
         /// <summary>
         /// E-Brake status
         /// </summary>
-        EB,
+        EB = 30,
         /// <summary>
         /// Engine brake status
         /// </summary>
-        ENB,
+        ENB = 28,
         /// <summary>
         /// Retarder status
         /// </summary>
-        RET,
+        RET = 26,
         // TODO: remember!
         /// <summary>
         /// I forgot.
         /// </summary>
-        BR,
+        BR = 24,
         /// <summary>
         /// Indicator hazards
         /// </summary>
-        INDH,
+        IND_H = 6,
         /// <summary>
         /// Indicator right
         /// </summary>
-        INDR,
+        IND_R = 4,
         /// <summary>
         /// Indicator left
         /// </summary>
-        INDL,
+        IND_L = 2,
         /// <summary>
         /// Differential lock status
         /// </summary>
-        DIF,
+        DIF = 0,
         /// <summary>
         /// Gear range
         /// </summary>
-        GR,
+        GR = 14,
         /// <summary>
         /// Cruise control status
         /// </summary>
-        CC,
+        CC = 12,
         /// <summary>
         /// Systems power status
         /// </summary>
-        PWR,
+        PWR = 13,
         /// <summary>
         /// Engine power status
         /// </summary>
-        ENG,
+        ENG = 15,
         /// <summary>
         /// Engine fault
         /// </summary>
-        EF,
+        EF = 1,
         /// <summary>
         /// Fuel 0%
         /// </summary>
-        F0,
+        F0 = 3,
         /// <summary>
         /// Fuel 10%
         /// </summary>
-        F1,
+        F1 = 5,
         /// <summary>
         /// Fuel 20%
         /// </summary>
-        F2,
+        F2 = 7,
         /// <summary>
         /// Fuel 30%
         /// </summary>
-        F3,
+        F3 = 25,
         /// <summary>
         /// Fuel 40%
         /// </summary>
-        F4,
+        F4 = 27,
         /// <summary>
         /// Fuel 50%
         /// </summary>
-        F5,
+        F5 = 29,
         /// <summary>
         /// Fuel 60%
         /// </summary>
-        F6,
+        F6 = 31,
         /// <summary>
         /// Fuel 70%
         /// </summary>
-        F7,
+        F7 = 17,
         /// <summary>
         /// Fuel 80%
         /// </summary>
-        F8,
+        F8 = 19,
         /// <summary>
         /// Fuel 90%
         /// </summary>
-        F9,
+        F9 = 21,
         /// <summary>
         /// Fuel 100%
         /// </summary>
-        F10
+        F10 = 23,
+
+        /// <summary>
+        /// Unused pins of shift registers
+        /// </summary>
+        UNUSED1 = 8,
+        UNUSED2 = 9,
+        UNUSED3 = 10,
+        UNUSED4 = 11
     }
 }
