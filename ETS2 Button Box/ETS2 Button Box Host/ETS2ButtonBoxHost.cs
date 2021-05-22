@@ -14,11 +14,28 @@ namespace ETS2_Button_Box_Host
 {
     public partial class ETS2ButtonBoxHost : Form
     {
+        #region Serial Communication
         /// <summary>
         /// Delimiter character for sending and receiving serial data
         /// </summary>
         private const char delimiter = '\x00';
 
+        /// <summary>
+        /// Serial connection to the button box
+        /// </summary>
+        private SerialPort buttonBoxPort;
+
+        /// <summary>
+        /// Serial data from button box received.
+        /// Handles all buttons, switches, rotary encoders and selectors.
+        /// </summary>
+        private void buttonBoxPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region LED Handling
         /// <summary>
         /// Time between toggling blinking LEDs in milliseconds
         /// </summary>
@@ -28,62 +45,6 @@ namespace ETS2_Button_Box_Host
         /// Time between sending LED status to button box in milliseconds
         /// </summary>
         private const double ledSendInterval = 100;
-
-        /// <summary>
-        /// Defines the threshold under which fuel percentage value which LEDs are turned on
-        /// </summary>
-        private readonly IReadOnlyDictionary<int, LED> fuelLedThreshold = new Dictionary<int, LED>()
-        {
-            { 5, LED.F1 },
-            { 10, LED.F2 },
-            { 20, LED.F3 },
-            { 30, LED.F4 },
-            { 40, LED.F5 },
-            { 50, LED.F6 },
-            { 60, LED.F7 },
-            { 70, LED.F8 },
-            { 80, LED.F9 },
-            { 90, LED.F10 }
-        };
-
-        /// <summary>
-        /// Run mode of the application
-        /// </summary>
-        private enum RunMode
-        {
-            /// <summary>
-            /// Connection to the button box has been established
-            /// </summary>
-            Connected = 1,
-            /// <summary>
-            /// ETS2 SDK is connected to a game instance
-            /// </summary>
-            Active = 2,
-            /// <summary>
-            /// Whether or not the scheduler is currently active
-            /// </summary>
-            Scheduler = 4
-        }
-
-        /// <summary>
-        /// Map of all current LED states
-        /// </summary>
-        private Dictionary<LED, bool> ledStates;
-
-        /// <summary>
-        /// ETS2 SDK client
-        /// </summary>
-        private SCSSdkTelemetry telemetry;
-
-        /// <summary>
-        /// Serial connection to the button box
-        /// </summary>
-        private SerialPort buttonBoxPort;
-
-        /// <summary>
-        /// Current run mode of the application
-        /// </summary>
-        private RunMode runMode;
 
         /// <summary>
         /// In (RunMode.Connected | RunMode.Inactive) mode stores the last LED toggle time for blinking LEDs
@@ -105,42 +66,27 @@ namespace ETS2_Button_Box_Host
         /// </summary>
         private bool isFuelWarning;
 
-        public ETS2ButtonBoxHost()
+        /// <summary>
+        /// Defines the threshold under which fuel percentage value which LEDs are turned on
+        /// </summary>
+        private readonly IReadOnlyDictionary<int, LED> fuelLedThreshold = new Dictionary<int, LED>()
         {
-            // WinForms initialisation
-            InitializeComponent();
+            { 5, LED.F1 },
+            { 10, LED.F2 },
+            { 20, LED.F3 },
+            { 30, LED.F4 },
+            { 40, LED.F5 },
+            { 50, LED.F6 },
+            { 60, LED.F7 },
+            { 70, LED.F8 },
+            { 80, LED.F9 },
+            { 90, LED.F10 }
+        };
 
-            // Initialise run mode to not connected, inactive and no scheduler running
-            this.runMode = 0;
-
-            // Initialise last LED toggle time to the current time
-            this.inactiveLedLastBlinkTime = DateTime.Now;
-
-            // Initialise last LED status time to the current time
-            this.lastLedStatusSendTime = DateTime.Now;
-
-            // Initialise last fuel warning LED time to current time
-            this.lastFuelWarningTime = DateTime.Now;
-
-            // Initialise the LED states map
-            this.ledStates = new Dictionary<LED, bool>();
-
-            // Fill LED states map with all available LEDs and turn them OFF
-            foreach (LED led in Enum.GetValues(typeof(LED)))
-                this.ledStates.Add(led, false);
-
-            // Initialise serial connection to button box
-            this.buttonBoxPort = new SerialPort();
-            this.buttonBoxPort.BaudRate = 9600;
-            this.buttonBoxPort.Parity = Parity.None;
-            this.buttonBoxPort.DataBits = 8;
-            this.buttonBoxPort.StopBits = StopBits.One;
-            this.buttonBoxPort.DataReceived += this.buttonBoxPort_DataReceived;
-
-            // Initialise ETS2 SDK client
-            this.telemetry = new SCSSdkTelemetry();
-            this.telemetry.Data += this.telemetry_Data;
-        }
+        /// <summary>
+        /// Map of all current LED states
+        /// </summary>
+        private Dictionary<LED, bool> ledStates;
 
         /// <summary>
         /// Disables all LEDs.
@@ -207,148 +153,6 @@ namespace ETS2_Button_Box_Host
             foreach (LED led in Enum.GetValues(typeof(LED)))
                 if (!leds.Contains(led))
                     disableLed(led);
-        }
-
-        /// <summary>
-        /// ETS2 SDK data has been received
-        /// </summary>
-        private void telemetry_Data(SCSSdkClient.Object.SCSTelemetry data, bool newTimestamp)
-        {
-            // Check for SDK connection to a game instance
-            if (!data.SdkActive)
-            {
-                // Disable Active run mode
-                this.runMode &= ~RunMode.Active;
-            }
-            else if ((this.runMode & RunMode.Active) == 0)
-            {
-                // Enable Active run mode
-                this.runMode |= RunMode.Active;
-
-                // Reset LEDs
-                this.resetLeds();
-
-                // Enable the LED scheduler
-                if ((this.runMode & RunMode.Scheduler) == 0)
-                    Task.Run(ledScheduler);
-            }
-
-            // Do nothing if SDK not connected or button box not connected
-            if ((this.runMode & RunMode.Active) == 0 || (this.runMode & RunMode.Connected) == 0)
-                return;
-
-            // Calculate percentage of fuel
-            int fuelPercentage = (int)Math.Round(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount / data.TruckValues.ConstantsValues.CapacityValues.Fuel * 100f);
-
-            // Get fuel warning indicator
-            this.isFuelWarning = data.TruckValues.CurrentValues.DashboardValues.WarningValues.FuelW;
-
-            // When no fuel warning occurs set F0 LED fixed on
-            if (!this.isFuelWarning && data.TruckValues.ConstantsValues.CapacityValues.Fuel > 0)
-                this.enableLed(LED.F0);
-
-            // Set individual F1-F10 LEDs based on the fuelLedThreshold
-            foreach (int threshold in fuelLedThreshold.Keys)
-            {
-                if (fuelPercentage > threshold)
-                    this.enableLed(fuelLedThreshold[threshold]);
-                else
-                    this.disableLed(fuelLedThreshold[threshold]);
-            }
-
-            // Handle system power LED
-            this.setLedState(LED.PWR, data.TruckValues.CurrentValues.ElectricEnabled);
-
-            // Handle engine power LED
-            this.setLedState(LED.ENG, data.TruckValues.CurrentValues.EngineEnabled);
-
-            // Handle brake LED
-            this.setLedState(LED.BR, data.TruckValues.CurrentValues.LightsValues.Brake);
-
-            // Handle cruise control LED
-            this.setLedState(LED.CC, data.TruckValues.CurrentValues.DashboardValues.CruiseControl);
-
-            // Handle motor brake LED
-            this.setLedState(LED.ENB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake);
-
-            // Handle parking brake LED
-            this.setLedState(LED.EB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake);
-
-            // Handle retarder LED
-            this.setLedState(LED.RET, data.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel > 0);
-
-            // Handle engine fault LED
-            this.setLedState(LED.EF, data.TruckValues.CurrentValues.DamageValues.Engine > 0.25);
-
-            // Handle high beam/flashers LED
-            this.setLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh);
-
-            // Handle indicators
-            this.setLedState(LED.IND_H, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn && data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
-            this.setLedState(LED.IND_L, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn);
-            this.setLedState(LED.IND_R, data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
-
-            // Handle trailer LED
-            this.setLedState(LED.TOW, data.TrailerValues.Any(t => t.Attached));
-        }
-
-        /// <summary>
-        /// Serial data from button box received.
-        /// Handles all buttons, switches, rotary encoders and selectors.
-        /// </summary>
-        private void buttonBoxPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Post initialisation routine gets UI elements ready for user interaction
-        /// </summary>
-        private void ETS2ButtonBoxHost_Load(object sender, EventArgs e)
-        {
-            this.reloadCOMPorts();
-        }
-
-        /// <summary>
-        /// Fill available COM ports into COM port combobox
-        /// </summary>
-        private void reloadCOMPorts()
-        {
-            this.cbCOMPort.Items.Clear();
-            this.cbCOMPort.Items.AddRange(SerialPort.GetPortNames());
-        }
-
-        /// <summary>
-        /// Connect to COM port button click handler
-        /// </summary>
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            // Get and validate the selected COM port
-            string comPort = this.cbCOMPort.SelectedItem as string;
-
-            if (string.IsNullOrEmpty(comPort))
-            {
-                MessageBox.Show("Please select a COM port from the list.", "No COM port selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (!SerialPort.GetPortNames().Contains(comPort))
-            {
-                MessageBox.Show("The selected COM port is not available anymore. Please check the connection and try again.", "COM port not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.reloadCOMPorts();
-                return;
-            }
-
-            // Assign COM port and open connection to button box
-            this.buttonBoxPort.PortName = comPort;
-            this.buttonBoxPort.Open();
-
-            if (this.buttonBoxPort.IsOpen)
-                this.runMode |= RunMode.Connected;
-
-            // Enable the LED scheduler
-            if ((this.runMode & RunMode.Scheduler) == 0)
-                Task.Run(ledScheduler);
         }
 
         /// <summary>
@@ -445,6 +249,214 @@ namespace ETS2_Button_Box_Host
             lock (this.ledStates)
                 return String.Join("", Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).Select(led => this.ledStates[led] ? "1" : "0"));
         }
+        #endregion
+
+        #region Button Handling
+        #endregion
+
+        #region SCS Telemetry SDK
+        /// <summary>
+        /// ETS2 SDK client
+        /// </summary>
+        private SCSSdkTelemetry telemetry;
+
+        /// <summary>
+        /// ETS2 SDK data has been received
+        /// </summary>
+        private void telemetry_Data(SCSSdkClient.Object.SCSTelemetry data, bool newTimestamp)
+        {
+            // Check for SDK connection to a game instance
+            if (!data.SdkActive)
+            {
+                // Disable Active run mode
+                this.runMode &= ~RunMode.Active;
+            }
+            else if ((this.runMode & RunMode.Active) == 0)
+            {
+                // Enable Active run mode
+                this.runMode |= RunMode.Active;
+
+                // Reset LEDs
+                this.resetLeds();
+
+                // Enable the LED scheduler
+                if ((this.runMode & RunMode.Scheduler) == 0)
+                    Task.Run(ledScheduler);
+            }
+
+            // Do nothing if SDK not connected or button box not connected
+            if ((this.runMode & RunMode.Active) == 0 || (this.runMode & RunMode.Connected) == 0)
+                return;
+
+            // Calculate percentage of fuel
+            int fuelPercentage = (int)Math.Round(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount / data.TruckValues.ConstantsValues.CapacityValues.Fuel * 100f);
+
+            // Get fuel warning indicator
+            this.isFuelWarning = data.TruckValues.CurrentValues.DashboardValues.WarningValues.FuelW;
+
+            // When no fuel warning occurs set F0 LED fixed on
+            if (!this.isFuelWarning && data.TruckValues.ConstantsValues.CapacityValues.Fuel > 0)
+                this.enableLed(LED.F0);
+
+            // Set individual F1-F10 LEDs based on the fuelLedThreshold
+            foreach (int threshold in fuelLedThreshold.Keys)
+            {
+                if (fuelPercentage > threshold)
+                    this.enableLed(fuelLedThreshold[threshold]);
+                else
+                    this.disableLed(fuelLedThreshold[threshold]);
+            }
+
+            // Handle system power LED
+            this.setLedState(LED.PWR, data.TruckValues.CurrentValues.ElectricEnabled);
+
+            // Handle engine power LED
+            this.setLedState(LED.ENG, data.TruckValues.CurrentValues.EngineEnabled);
+
+            // Handle brake LED
+            this.setLedState(LED.BR, data.TruckValues.CurrentValues.LightsValues.Brake);
+
+            // Handle cruise control LED
+            this.setLedState(LED.CC, data.TruckValues.CurrentValues.DashboardValues.CruiseControl);
+
+            // Handle motor brake LED
+            this.setLedState(LED.ENB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake);
+
+            // Handle parking brake LED
+            this.setLedState(LED.EB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake);
+
+            // Handle retarder LED
+            this.setLedState(LED.RET, data.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel > 0);
+
+            // Handle engine fault LED
+            this.setLedState(LED.EF, data.TruckValues.CurrentValues.DamageValues.Engine > 0.25);
+
+            // Handle high beam/flashers LED
+            this.setLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh);
+
+            // Handle indicators
+            this.setLedState(LED.IND_H, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn && data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
+            this.setLedState(LED.IND_L, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn);
+            this.setLedState(LED.IND_R, data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
+
+            // Handle trailer LED
+            this.setLedState(LED.TOW, data.TrailerValues.Any(t => t.Attached));
+        }
+        #endregion
+
+        #region Logic
+        /// <summary>
+        /// Run mode of the application
+        /// </summary>
+        private enum RunMode
+        {
+            /// <summary>
+            /// Connection to the button box has been established
+            /// </summary>
+            Connected = 1,
+            /// <summary>
+            /// ETS2 SDK is connected to a game instance
+            /// </summary>
+            Active = 2,
+            /// <summary>
+            /// Whether or not the scheduler is currently active
+            /// </summary>
+            Scheduler = 4
+        }
+
+        /// <summary>
+        /// Current run mode of the application
+        /// </summary>
+        private RunMode runMode;
+        #endregion
+
+        #region Form and UI
+        public ETS2ButtonBoxHost()
+        {
+            // WinForms initialisation
+            InitializeComponent();
+
+            // Initialise run mode to not connected, inactive and no scheduler running
+            this.runMode = 0;
+
+            // Initialise last LED toggle time to the current time
+            this.inactiveLedLastBlinkTime = DateTime.Now;
+
+            // Initialise last LED status time to the current time
+            this.lastLedStatusSendTime = DateTime.Now;
+
+            // Initialise last fuel warning LED time to current time
+            this.lastFuelWarningTime = DateTime.Now;
+
+            // Initialise the LED states map
+            this.ledStates = new Dictionary<LED, bool>();
+
+            // Fill LED states map with all available LEDs and turn them OFF
+            foreach (LED led in Enum.GetValues(typeof(LED)))
+                this.ledStates.Add(led, false);
+
+            // Initialise serial connection to button box
+            this.buttonBoxPort = new SerialPort();
+            this.buttonBoxPort.BaudRate = 9600;
+            this.buttonBoxPort.Parity = Parity.None;
+            this.buttonBoxPort.DataBits = 8;
+            this.buttonBoxPort.StopBits = StopBits.One;
+            this.buttonBoxPort.DataReceived += this.buttonBoxPort_DataReceived;
+
+            // Initialise ETS2 SDK client
+            this.telemetry = new SCSSdkTelemetry();
+            this.telemetry.Data += this.telemetry_Data;
+        }
+
+        /// <summary>
+        /// Post initialisation routine gets UI elements ready for user interaction
+        /// </summary>
+        private void ETS2ButtonBoxHost_Load(object sender, EventArgs e)
+        {
+            this.reloadCOMPorts();
+        }
+
+        /// <summary>
+        /// Fill available COM ports into COM port combobox
+        /// </summary>
+        private void reloadCOMPorts()
+        {
+            this.cbCOMPort.Items.Clear();
+            this.cbCOMPort.Items.AddRange(SerialPort.GetPortNames());
+        }
+
+        /// <summary>
+        /// Connect to COM port button click handler
+        /// </summary>
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            // Get and validate the selected COM port
+            string comPort = this.cbCOMPort.SelectedItem as string;
+
+            if (string.IsNullOrEmpty(comPort))
+            {
+                MessageBox.Show("Please select a COM port from the list.", "No COM port selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!SerialPort.GetPortNames().Contains(comPort))
+            {
+                MessageBox.Show("The selected COM port is not available anymore. Please check the connection and try again.", "COM port not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.reloadCOMPorts();
+                return;
+            }
+
+            // Assign COM port and open connection to button box
+            this.buttonBoxPort.PortName = comPort;
+            this.buttonBoxPort.Open();
+
+            if (this.buttonBoxPort.IsOpen)
+                this.runMode |= RunMode.Connected;
+
+            // Enable the LED scheduler
+            if ((this.runMode & RunMode.Scheduler) == 0)
+                Task.Run(ledScheduler);
+        }
 
         /// <summary>
         /// Reload COM ports button click handler
@@ -453,5 +465,6 @@ namespace ETS2_Button_Box_Host
         {
             this.reloadCOMPorts();
         }
+        #endregion
     }
 }
