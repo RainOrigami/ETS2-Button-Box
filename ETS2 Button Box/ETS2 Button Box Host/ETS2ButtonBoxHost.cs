@@ -284,9 +284,9 @@ namespace ETS2_Button_Box_Host
             this.setLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh);
 
             // Handle indicators
-            this.setLedState(LED.INDH, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn && data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
-            this.setLedState(LED.INDL, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn);
-            this.setLedState(LED.INDR, data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
+            this.setLedState(LED.IND_H, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn && data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
+            this.setLedState(LED.IND_L, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn);
+            this.setLedState(LED.IND_R, data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
 
             // Handle trailer LED
             this.setLedState(LED.TOW, data.TrailerValues.Any(t => t.Attached));
@@ -372,7 +372,7 @@ namespace ETS2_Button_Box_Host
                 if ((this.runMode & RunMode.Connected) != 0 && (this.runMode & RunMode.Active) == 0)
                 {
                     // Reset all LEDs except INDH
-                    this.resetLedsExcept(LED.INDH);
+                    this.resetLedsExcept(LED.IND_H);
 
                     // Enable PWR to show powered state
                     this.enableLed(LED.PWR);
@@ -381,7 +381,7 @@ namespace ETS2_Button_Box_Host
                     if ((DateTime.Now - this.inactiveLedLastBlinkTime).TotalMilliseconds >= ledBlinkTimeout)
                     {
                         // Toggle LED INDH to show connection to button box but no connection to SDK
-                        this.toggleLed(LED.INDH);
+                        this.toggleLed(LED.IND_H);
 
                         // Set last inactive LED toggle time to now
                         this.inactiveLedLastBlinkTime = DateTime.Now;
