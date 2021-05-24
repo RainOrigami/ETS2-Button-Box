@@ -284,6 +284,34 @@ namespace ETS2_Button_Box_Host
 
         private void buttonStateChangedHandler(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates)
         {
+            if (checkButtonPressed(newButtonStates, previousButtonStates, Button.PWR))
+            {
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_R, false, Keyboard.InputType.Keyboard);
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_R, true, Keyboard.InputType.Keyboard);
+            }
+            if (checkButtonPressed(newButtonStates, previousButtonStates, Button.ENG) && newButtonStates[Button.PWR])
+            {
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_E, false, Keyboard.InputType.Keyboard);
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_E, true, Keyboard.InputType.Keyboard);
+            }
+            if (checkButtonReleased(newButtonStates, previousButtonStates, Button.PWR))
+            {
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_R, false, Keyboard.InputType.Keyboard);
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_R, true, Keyboard.InputType.Keyboard);
+            }
+            if (checkButtonPressed(newButtonStates, previousButtonStates, Button.HRN))
+            {
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_H, false, Keyboard.InputType.Keyboard);
+            }
+            if (checkButtonReleased(newButtonStates, previousButtonStates, Button.HRN))
+            {
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_H, true, Keyboard.InputType.Keyboard);
+            }
+            if (checkButtonPressed(newButtonStates, previousButtonStates, Button.INDH))
+            {
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_F, false, Keyboard.InputType.Keyboard);
+                Keyboard.SendKey(Keyboard.DirectXKeyStrokes.DIK_F, true, Keyboard.InputType.Keyboard);
+            }
         }
 
         private static bool checkButtonPressed(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates, Button button) => newButtonStates[button] && !previousButtonStates[button];

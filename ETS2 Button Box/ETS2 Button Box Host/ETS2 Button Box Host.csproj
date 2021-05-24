@@ -71,6 +71,7 @@
     <Compile Include="ETS2ButtonBoxHost.Designer.cs">
       <DependentUpon>ETS2ButtonBoxHost.cs</DependentUpon>
     </Compile>
+    <Compile Include="Keyboard.cs" />
     <Compile Include="LED.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
