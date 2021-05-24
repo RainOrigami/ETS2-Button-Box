@@ -2,15 +2,15 @@
 
 #pragma region IO Definitions
 // Pins for LED shift registers
-#define PIN_LED_SR_LATCH 17
-#define PIN_LED_SR_CLOCK 6
-#define PIN_LED_SR_DATA 16
+#define PIN_LED_SR_LATCH 17	// STCP
+#define PIN_LED_SR_CLOCK 6	// SHCP
+#define PIN_LED_SR_DATA 16	// LEDSD
 
 // Amount of LED shift registers
 #define LED_SR_COUNT 4
 
 // Amount of LEDs
-#define LED_COUNT LED_SR_COUNT * sizeof(uint8_t) * 8
+#define LED_COUNT LED_SR_COUNT * 8
 
 // Note: These indices must be equal to the corresponding shift out position of the connected LED
 #define LED_BR 24
@@ -93,7 +93,9 @@
 #define BTN_WI3 0
 #define BTN_WI4 6
 
+// Store LED states for writing
 uint8_t ledStates[LED_SR_COUNT];
+
 // Store button states from reading
 uint8_t buttonStates[BTN_SR_COUNT];
 
@@ -105,24 +107,24 @@ uint8_t previousButtonStates[BTN_SR_COUNT];
 /// <summary>
 /// Enable an LED
 /// </summary>
-/// <param name="def">LED IO definition reference</param>
+/// <param name="led">LED index on shift registers</param>
 void enableLED(uint8_t led) {
-	ledStates[led / (sizeof(uint8_t) * 8)] |= 1 << (led % (sizeof(uint8_t) * 8));
+	ledStates[led / 8] |= 1 << (led % 8);
 }
 
 /// <summary>
 /// Disable an LED
 /// </summary>
-/// <param name="def">LED IO definition reference</param>
+/// <param name="led">LED index on shift registers</param>
 void disableLED(uint8_t led) {
-	ledStates[led / (sizeof(uint8_t) * 8)] &= ~(1 << (led % (sizeof(uint8_t) * 8)));
+	ledStates[led / 8] &= ~(1 << (led % 8));
 }
 
 /// <summary>
 /// Disables all LEDs
 /// </summary>
 void resetLEDs() {
-	for (size_t i = 0; i < LED_SR_COUNT * sizeof(uint8_t) * 8; i++)
+	for (size_t i = 0; i < LED_COUNT; i++)
 		disableLED(i);
 }
 
@@ -186,7 +188,7 @@ void handleLedFromSerial() {
 	// data contains a string of 0 and 1 in order of the LED enum as per host application
 
 	// Check that received data is of equal length as the LED IO definitions
-	if (LED_SR_COUNT * sizeof(uint8_t) * 8 != data.length())
+	if (LED_COUNT != data.length())
 	{
 		// Either less or more LEDs have been sent over serial
 		// To indicate this error to the user we will disable all LEDs...
@@ -202,7 +204,7 @@ void handleLedFromSerial() {
 	}
 
 	// Loop through all LEDs in the leds IO definition
-	for (size_t i = 0; i < LED_SR_COUNT * sizeof(uint8_t) * 8; i++)
+	for (size_t i = 0; i < LED_COUNT; i++)
 	{
 		// Enable or disable each corresponding LED
 		if (data.charAt(i) == '1')
