@@ -46,6 +46,18 @@
 #define LED_UNUSED3 10
 #define LED_UNUSED4 11
 
+// Pins for LED shift registers
+#define PIN_BTN_SR_LOAD 8	// PL
+#define PIN_BTN_SR_LATCH 7	// CE
+#define PIN_BTN_SR_CLOCK 9	// CP
+#define PIN_BTN_SR_DATA 5	// BTNSD
+
+// Amount of button shift registers
+#define BTN_SR_COUNT 5
+
+// Amount of buttons
+#define BTN_COUNT BTN_SR_COUNT * 8
+
 // Note: These indices must be equal to the corresponding shift in position of the connected button
 #define BTN_BC 21
 #define BTN_CCO 1
@@ -82,6 +94,11 @@
 #define BTN_WI4 6
 
 uint8_t ledStates[LED_SR_COUNT];
+// Store button states from reading
+uint8_t buttonStates[BTN_SR_COUNT];
+
+// Store button states of last sent state
+uint8_t previousButtonStates[BTN_SR_COUNT];
 #pragma endregion
 
 #pragma region IO Functions
@@ -110,13 +127,21 @@ void resetLEDs() {
 }
 
 /// <summary>
-/// Read a button based on an IO definition
+/// Reads all buttons into the buttonStates array
 /// </summary>
-/// <param name="def">Button IO definition reference</param>
-/// <returns>true when button is pressed, false when released</returns>
-bool readButton() {
-	// TODO: implement
-	return false;
+void readButtons() {
+	// Load pins into shift registers
+	digitalWrite(PIN_BTN_SR_LOAD, LOW);
+	delayMicroseconds(5);
+	digitalWrite(PIN_BTN_SR_LOAD, HIGH);
+	delayMicroseconds(5);
+
+	// Retrieve data from shift registers
+	digitalWrite(PIN_BTN_SR_CLOCK, HIGH);
+	digitalWrite(PIN_BTN_SR_LATCH, LOW);
+	for (size_t i = 0; i < BTN_SR_COUNT; i++)
+		buttonStates[i] = shiftIn(PIN_BTN_SR_DATA, PIN_BTN_SR_CLOCK, MSBFIRST);
+	digitalWrite(PIN_BTN_SR_LATCH, HIGH);
 }
 
 /// <summary>
@@ -188,7 +213,23 @@ void handleLedFromSerial() {
 }
 
 void sendButtonData() {
-	// TODO: implement
+	bool change = false;
+	for (size_t i = 0; i < BTN_SR_COUNT; i++)
+		if (previousButtonStates[i] != buttonStates[i])
+		{
+			change = true;
+			break;
+		}
+
+	if (change) {
+		for (size_t i = 0; i < BTN_SR_COUNT; i++)
+			for (size_t j = 0; j < 8; j++)
+				printf("%c", (buttonStates[i] & (1 << j)) > 0 ? '1' : '0');
+		printf("\n");
+
+		for (size_t i = 0; i < BTN_SR_COUNT; i++)
+			previousButtonStates[i] = buttonStates[i];
+	}
 }
 #pragma endregion
 
@@ -201,9 +242,15 @@ void setup() {
 	Serial.begin(9600);
 
 	// Initialise shift registers
+	// LED
 	pinMode(PIN_LED_SR_LATCH, OUTPUT);
 	pinMode(PIN_LED_SR_DATA, OUTPUT);
 	pinMode(PIN_LED_SR_CLOCK, OUTPUT);
+	// Buttons
+	pinMode(PIN_BTN_SR_LOAD, OUTPUT);
+	pinMode(PIN_BTN_SR_LATCH, OUTPUT);
+	pinMode(PIN_BTN_SR_CLOCK, OUTPUT);
+	pinMode(PIN_BTN_SR_DATA, INPUT);
 
 	// Clear all shift registers and turn all LEDs off
 	resetLEDs();
@@ -217,8 +264,8 @@ void setup() {
 /// Arduino main loop
 /// </summary>
 void loop() {
-	// TODO: handle button inputs
-	// TODO: make sure this doesn't take more than 100ms in total
+	readButtons();
+	sendButtonData();
 
 	handleLedFromSerial();
 
