@@ -31,7 +31,32 @@ namespace ETS2_Button_Box_Host
         /// </summary>
         private void buttonBoxPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            // Read until receive queue is empty
+            while (buttonBoxPort.BytesToRead > 0)
+            {
+                // Read button line
+                string buttons = buttonBoxPort.ReadLine();
 
+                // Validate length of button line
+                if (buttons.Length != Enum.GetValues(typeof(Button)).Length)
+                {
+                    Console.WriteLine($"Received invalid button state (is {buttons.Length} should {Enum.GetValues(typeof(Button)).Length}): {buttons}");
+                    continue;
+                }
+
+                // Build previous button states map for event
+                Dictionary<Button, bool> previousButtonStates = new Dictionary<Button, bool>();
+                foreach (Button button in this.buttonStates.Keys)
+                    previousButtonStates.Add(button, this.buttonStates[button]);
+
+                // Read button states into button states map
+                for (int i = 0; i < buttons.Length; i++)
+                    if (this.buttonStates.ContainsKey((Button)i))
+                        this.buttonStates[(Button)i] = buttons[i] == '1';
+
+                // Invoke event
+                this.ButtonStateChanged?.Invoke(this.buttonStates, previousButtonStates);
+            }
         }
         #endregion
 
@@ -252,6 +277,17 @@ namespace ETS2_Button_Box_Host
         #endregion
 
         #region Button Handling
+        private delegate void OnButtonStateChanged(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates);
+        private event OnButtonStateChanged ButtonStateChanged;
+
+        private Dictionary<Button, bool> buttonStates;
+
+        private void buttonStateChangedHandler(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates)
+        {
+        }
+
+        private static bool checkButtonPressed(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates, Button button) => newButtonStates[button] && !previousButtonStates[button];
+        private static bool checkButtonReleased(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates, Button button) => !newButtonStates[button] && previousButtonStates[button];
         #endregion
 
         #region SCS Telemetry SDK
@@ -394,6 +430,16 @@ namespace ETS2_Button_Box_Host
             // Fill LED states map with all available LEDs and turn them OFF
             foreach (LED led in Enum.GetValues(typeof(LED)))
                 this.ledStates.Add(led, false);
+
+            // Initialise the button states map
+            this.buttonStates = new Dictionary<Button, bool>();
+
+            // Fill button states map with all available buttons and turn them OFF
+            foreach (Button button in Enum.GetValues(typeof(Button)))
+                this.buttonStates.Add(button, false);
+
+            // Hook on button state change event
+            this.ButtonStateChanged += buttonStateChangedHandler;
 
             // Initialise serial connection to button box
             this.buttonBoxPort = new SerialPort();
