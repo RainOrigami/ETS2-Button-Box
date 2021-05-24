@@ -14,134 +14,143 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Cruise control enable
         /// </summary>
-        CCO,
+        CCO = 1,
         /// <summary>
         /// Cruise control resume
         /// </summary>
-        CCR,
+        CCR = 3,
         /// <summary>
         /// Cruise control rotary encoder pin 1
         /// </summary>
-        CCS1,
+        CCS1 = 7,
         /// <summary>
         /// Cruise control rotary encoder pin 2
         /// </summary>
-        CCS2,
+        CCS2 = 5,
         /// <summary>
         /// Gear range high/low
         /// </summary>
-        GR,
+        GR = 11,
         /// <summary>
         /// Differential lock engage/disengage
         /// </summary>
-        DIF,
+        DIF = 9,
         /// <summary>
         /// View selector selection 1
         /// </summary>
-        VW1,
+        VW1 = 15,
         /// <summary>
         /// View selector selection 2
         /// </summary>
-        VW2,
+        VW2 = 13,
         /// <summary>
         /// View selector selection 3
         /// </summary>
-        VW3,
+        VW3 = 19,
         /// <summary>
         /// View selector selection 4
         /// </summary>
-        VW4,
+        VW4 = 17,
         /// <summary>
         /// Hazard indicator toggle
         /// </summary>
-        INDH,
+        INDH = 23,
         /// <summary>
         /// Beacon on/off
         /// </summary>
-        BC,
+        BC = 21,
         /// <summary>
         /// Lights selector selection 1
         /// </summary>
-        LI1,
+        LI1 = 27,
         /// <summary>
         /// Lights selector selection 2
         /// </summary>
-        LI2,
+        LI2 = 25,
         /// <summary>
         /// Lights selector selection 3
         /// </summary>
-        LI3,
+        LI3 = 31,
         /// <summary>
         /// Lights selector selection 4
         /// </summary>
-        LI4,
+        LI4 = 29,
         /// <summary>
         /// Wiper selector selection 1
         /// </summary>
-        WI1,
+        WI1 = 32,
         /// <summary>
         /// Wiper selector selection 2
         /// </summary>
-        WI2,
+        WI2 = 2,
         /// <summary>
         /// Wiper selector selection 3
         /// </summary>
-        WI3,
+        WI3 = 0,
         /// <summary>
         /// Wiper selector selection 4
         /// </summary>
-        WI4,
+        WI4 = 6,
         /// <summary>
         /// Trailer connection toggle
         /// </summary>
-        TOW,
+        TOW = 4,
         /// <summary>
         /// Horns momentary (Normal horns)
         /// </summary>
-        HRN,
+        HRN = 10,
         /// <summary>
         /// Screamer momentary (Loud horns)
         /// </summary>
-        SCR,
+        SCR = 8,
         /// <summary>
         /// Flasher momentary (momentary high beam)
         /// </summary>
-        FLS,
+        FLS = 14,
         /// <summary>
         /// Retarder on/off
         /// </summary>
-        RET,
+        RET = 12,
         /// <summary>
         /// Retarder strength rotary encoder pin 1
         /// </summary>
-        RET1,
+        RET1 = 18,
         /// <summary>
         /// Retarder strength rotary encoder pin 2
         /// </summary>
-        RET2,
+        RET2 = 16,
         /// <summary>
         /// Engine brake on/off
         /// </summary>
-        ENB,
+        ENB = 22,
         /// <summary>
         /// Engine brake strength rotary encoder pin 1
         /// </summary>
-        ENB1,
+        ENB1 = 20,
         /// <summary>
         /// Engine brake strength rotary encoder pin 2
         /// </summary>
-        ENB2,
+        ENB2 = 26,
         /// <summary>
         /// E-Brake on/off
         /// </summary>
-        EB,
+        EB = 24,
         /// <summary>
         /// Systems power on/off
         /// </summary>
-        PWR,
+        PWR = 30,
         /// <summary>
         /// Engine power enable
         /// </summary>
-        ENG
+        ENG = 28,
+
+        // Unused shift register inputs
+        UNUSED1 = 33,
+        UNUSED2 = 34,
+        UNUSED3 = 35,
+        UNUSED4 = 36,
+        UNUSED5 = 37,
+        UNUSED6 = 38,
+        UNUSED7 = 39,
     }
 }
