@@ -68,14 +68,24 @@ namespace ETS2_Button_Box_Host
         /// Handles telemetry change post LED handling to send the current LED state directly after LEDs were updated
         /// </summary>
         /// <param name="telemetry">Latest telemetry data set</param>
-        private void TelemetryController_TelemetryChanged(SCSSdkClient.Object.SCSTelemetry telemetry) => this.sendLedUpdate();
+        private void TelemetryController_TelemetryChanged(SCSSdkClient.Object.SCSTelemetry telemetry)
+        {
+            if (!this.TelemetryController.IsConnected) return;
+
+            this.sendLedUpdate();
+        }
 
         /// <summary>
         /// Handles button state change post button handling to send the current LED state directly after buttons were changed
         /// </summary>
         /// <param name="newButtonStates">New button state dictionary</param>
         /// <param name="previousButtonStates">Previous button state dictionary</param>
-        private void ButtonController_ButtonStateChanged(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates) => this.sendLedUpdate();
+        private void ButtonController_ButtonStateChanged(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates)
+        {
+            if (!this.TelemetryController.IsConnected) return;
+
+            this.sendLedUpdate();
+        }
 
         #region Button Layout
         private void initialiseButtonLayout()
@@ -537,6 +547,14 @@ namespace ETS2_Button_Box_Host
             // Handle LED interval on the controller
             this.LedController.HandleLedInterval();
 
+            // Show readiness state while telemetry is not connected
+            if (!this.TelemetryController.IsConnected)
+            {
+                this.LedController.ResetLedsExcept(LED.IND_H);
+                this.LedController.EnableLed(LED.PWR);
+                this.LedController.ToggleLed(LED.IND_H);
+            }
+
             // Send LED state string to the box
             this.sendLedUpdate();
         }
@@ -547,15 +565,6 @@ namespace ETS2_Button_Box_Host
         /// <param name="state">Unused</param>
         private void sendLedUpdate()
         {
-            // Show readiness state while telemetry is not connected
-            if (!this.telemetryController.IsTelemetryConnected)
-            {
-                this.ledController.ResetLedsExcept(LED.IND_H);
-                this.ledController.EnableLed(LED.PWR);
-                this.ledController.ToggleLed(LED.IND_H);
-                return;
-            }
-
             // Send LED state string
             this.SerialController.SendLedState(this.LedController.GetLedStateString());
         }
