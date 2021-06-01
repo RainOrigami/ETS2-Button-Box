@@ -112,5 +112,16 @@ namespace ETS2_Button_Box_Host
         {
             this.Visible = true;
         }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (this.buttonBoxController == null)
+            {
+                this.lblConnectionState.Text = "Unavailable";
+                return;
+            }
+
+            this.lblConnectionState.Text = $"{(this.buttonBoxController.SerialController.IsConnected ? "ButtonBox connected" : "ButtonBox disconnected")}, {(this.buttonBoxController.TelemetryController.IsConnected ? "Telemetry connected" : "Telemetry disconnected")}";
+        }
     }
 }

@@ -43,6 +43,7 @@ namespace ETS2_Button_Box_Host
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblConnectionState = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -144,6 +145,11 @@ namespace ETS2_Button_Box_Host
             this.lblConnectionState.Size = new System.Drawing.Size(86, 17);
             this.lblConnectionState.Text = "Not connected";
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // ETS2ButtonBoxHost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -184,6 +190,7 @@ namespace ETS2_Button_Box_Host
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.Timer timer;
     }
 }
 
