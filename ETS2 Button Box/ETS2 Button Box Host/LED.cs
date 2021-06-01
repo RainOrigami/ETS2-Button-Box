@@ -36,9 +36,9 @@ namespace ETS2_Button_Box_Host
         /// </summary>
         ENB = 28,
         /// <summary>
-        /// Retarder status
+        /// Trailer brake status
         /// </summary>
-        RET = 26,
+        TB = 26,
         // TODO: remember!
         /// <summary>
         /// I forgot.

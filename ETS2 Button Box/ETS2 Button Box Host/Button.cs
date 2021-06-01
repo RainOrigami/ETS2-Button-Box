@@ -108,9 +108,9 @@ namespace ETS2_Button_Box_Host
         /// </summary>
         FLS = 14,
         /// <summary>
-        /// Retarder on/off
+        /// Trailer brake
         /// </summary>
-        RET = 12,
+        TB = 12,
         /// <summary>
         /// Retarder strength rotary encoder pin 1
         /// </summary>

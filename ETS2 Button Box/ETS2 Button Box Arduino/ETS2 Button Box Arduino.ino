@@ -27,7 +27,7 @@
 #define LED_IND_L 2
 #define LED_IND_R 4
 #define LED_PWR 13
-#define LED_RET 26
+#define LED_TB 26
 #define LED_SCR 20
 #define LED_TOW 16
 #define LED_F0 3
@@ -79,7 +79,7 @@
 #define BTN_LI3 31
 #define BTN_LI4 29
 #define BTN_PWR 30
-#define BTN_RET 12
+#define BTN_TB 12
 #define BTN_RET1 18
 #define BTN_RET2 16
 #define BTN_SCR 8
