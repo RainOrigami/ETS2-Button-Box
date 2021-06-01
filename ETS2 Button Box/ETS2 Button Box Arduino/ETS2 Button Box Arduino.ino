@@ -185,32 +185,51 @@ void handleLedFromSerial() {
 	// Set last receive time for timeout
 	lastReceiveTime = millis();
 
-	// data contains a string of 0 and 1 in order of the LED enum as per host application
+	// data contains a data indicator and, depending on the data, a string of 0 and 1 in order of the LED enum as per host application
 
-	// Check that received data is of equal length as the LED IO definitions
-	if (LED_COUNT != data.length())
-	{
-		// Either less or more LEDs have been sent over serial
-		// To indicate this error to the user we will disable all LEDs...
+	// Check data indicator
+	if (data == "HANDSHAKE") {
+		// Handshake gets an instant handshake reply
+		printf("HANDSHAKE\n");
+		// Indicate handshake
 		resetLEDs();
-
-		// ...and only enable PWR and EF to show a fault and IND_L to show an LED data mismatch failure
 		enableLED(LED_PWR);
-		enableLED(LED_EF);
 		enableLED(LED_IND_L);
-
-		// Stop further processing
+		enableLED(LED_IND_R);
 		return;
 	}
 
-	// Loop through all LEDs in the leds IO definition
-	for (size_t i = 0; i < LED_COUNT; i++)
-	{
-		// Enable or disable each corresponding LED
-		if (data.charAt(i) == '1')
-			enableLED(i);
-		else
-			disableLED(i);
+	if (data.startsWith("LED[") && data.endsWith("]")) {
+		// LED event
+
+		// Remove data indicator
+		data = data.substring(4, data.length() - 2);
+
+		// Check that received data is of equal length as the LED IO definitions
+		if (LED_COUNT != data.length())
+		{
+			// Either less or more LEDs have been sent over serial
+			// To indicate this error to the user we will disable all LEDs...
+			resetLEDs();
+
+			// ...and only enable PWR and EF to show a fault and IND_L to show an LED data mismatch failure
+			enableLED(LED_PWR);
+			enableLED(LED_EF);
+			enableLED(LED_IND_L);
+
+			// Stop further processing
+			return;
+		}
+
+		// Loop through all LEDs in the leds IO definition
+		for (size_t i = 0; i < LED_COUNT; i++)
+		{
+			// Enable or disable each corresponding LED
+			if (data.charAt(i) == '1')
+				enableLED(i);
+			else
+				disableLED(i);
+		}
 	}
 }
 
@@ -224,10 +243,11 @@ void sendButtonData() {
 		}
 
 	if (change) {
+		printf("BTN[");
 		for (size_t i = 0; i < BTN_SR_COUNT; i++)
 			for (size_t j = 0; j < 8; j++)
 				printf("%c", (buttonStates[i] & (1 << j)) > 0 ? '1' : '0');
-		printf("\n");
+		printf("]\n");
 
 		for (size_t i = 0; i < BTN_SR_COUNT; i++)
 			previousButtonStates[i] = buttonStates[i];
