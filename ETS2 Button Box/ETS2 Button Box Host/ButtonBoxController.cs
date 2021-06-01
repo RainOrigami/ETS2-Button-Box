@@ -21,22 +21,22 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// The controller handling all button interaction
         /// </summary>
-        private ButtonController buttonController;
+        public ButtonController ButtonController { get; private set; }
 
         /// <summary>
         /// The controller handling all LED interaction
         /// </summary>
-        private LEDController ledController;
+        public LEDController LedController { get; private set; }
 
         /// <summary>
         /// The controller handling all serial interaction
         /// </summary>
-        private SerialController serialController;
+        public SerialController SerialController { get; private set; }
 
         /// <summary>
         /// The controller handling all telemetry interaction
         /// </summary>
-        private TelemetryController telemetryController;
+        public TelemetryController TelemetryController { get; private set; }
 
         /// <summary>
         /// The timer that periodically sends LED updates
@@ -46,19 +46,19 @@ namespace ETS2_Button_Box_Host
         public ButtonBoxController()
         {
             // Initialise controllers
-            this.buttonController = new ButtonController();
-            this.ledController = new LEDController();
-            this.serialController = new SerialController();
-            this.telemetryController = new TelemetryController();
+            this.ButtonController = new ButtonController();
+            this.LedController = new LEDController();
+            this.SerialController = new SerialController();
+            this.TelemetryController = new TelemetryController();
 
             // Initialise button state change events
-            this.serialController.ButtonStateChangeReceived += this.buttonController.ParseButtonString;
-            this.buttonController.ButtonStateChanged += this.ledController.HandleChangedButtonState;
-            this.buttonController.ButtonStateChanged += ButtonController_ButtonStateChanged;
+            this.SerialController.ButtonStateChangeReceived += this.ButtonController.ParseButtonString;
+            this.ButtonController.ButtonStateChanged += this.LedController.HandleChangedButtonState;
+            this.ButtonController.ButtonStateChanged += ButtonController_ButtonStateChanged;
 
             // Initialise telemetry change events
-            this.telemetryController.TelemetryChanged += this.ledController.HandleTelemetryData;
-            this.telemetryController.TelemetryChanged += TelemetryController_TelemetryChanged;
+            this.TelemetryController.TelemetryChanged += this.LedController.HandleTelemetryData;
+            this.TelemetryController.TelemetryChanged += TelemetryController_TelemetryChanged;
 
             // Initialise LED update timer
             this.ledUpdateTimer = new Timer(this.doLedInterval, null, 0, LedUpdateTimerInterval);
@@ -84,88 +84,88 @@ namespace ETS2_Button_Box_Host
             // This will connect all box buttons to their respective actions, like invoking key presses or handling selector switch selection
 
             // Power on only if elecricity is off
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.PWR,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
+                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Power off only if electricity is on
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.PWR,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
+                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Engine on only if engine is off
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.ENG,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
+                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Engine off only if engine is off
             // TODO: validate that engine can be turned off seperately from elecricity
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.ENG,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
+                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Cruise control on only if cruise control is off
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCO,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Cruise control off only if cruise control is on
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCO,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Cruise control resume only if cruise control is off
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCR,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Cruise control off only if cruise control is on
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCR,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = a => KeyboardController.InvokeKeyPress(KeyboardController.ButtonToKeyStroke[Button.CCO])
                 });
 
             // Cruise control decrease (turn clockwise) can be used anytime
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCS1,
@@ -175,7 +175,7 @@ namespace ETS2_Button_Box_Host
                 });
 
             // Cruise control increase (turn counterclockwise) can be used anytime
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCS2,
@@ -229,41 +229,41 @@ namespace ETS2_Button_Box_Host
             //});
 
             // View selector requires special attention
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW1,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.ViewSelection
+                    Action = this.ButtonController.ViewSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW2,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.ViewSelection
+                    Action = this.ButtonController.ViewSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW3,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.ViewSelection
+                    Action = this.ButtonController.ViewSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW4,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.ViewSelection
+                    Action = this.ButtonController.ViewSelection
                 });
 
             // Hazards toggle any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.INDH,
@@ -273,95 +273,95 @@ namespace ETS2_Button_Box_Host
                 });
 
             // Beacon can only turn on when it's off
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.BC,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
+                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Beacon can only turn off when it's on
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.BC,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
+                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
             // Wiper selector requires special attention
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.WI1,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.WiperSelection
+                    Action = this.ButtonController.WiperSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.WI2,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.WiperSelection
+                    Action = this.ButtonController.WiperSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.WI3,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.WiperSelection
+                    Action = this.ButtonController.WiperSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.WI4,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.WiperSelection
+                    Action = this.ButtonController.WiperSelection
                 });
 
             // Lights selector requires special attention
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.LI1,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.LightsSelection
+                    Action = this.ButtonController.LightsSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.LI2,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.LightsSelection
+                    Action = this.ButtonController.LightsSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.LI3,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.LightsSelection
+                    Action = this.ButtonController.LightsSelection
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.LI4,
                     ButtonPressType = ButtonPressType.Pressed,
                     IsActionValid = () => true,
-                    Action = this.buttonController.LightsSelection
+                    Action = this.ButtonController.LightsSelection
                 });
 
             // Tow can be used any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.TOW,
@@ -371,7 +371,7 @@ namespace ETS2_Button_Box_Host
                 });
 
             // Horns can be used any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.HRN,
@@ -379,7 +379,7 @@ namespace ETS2_Button_Box_Host
                     IsActionValid = () => true,
                     Action = KeyboardController.InvokeKeyDown
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.HRN,
@@ -389,7 +389,7 @@ namespace ETS2_Button_Box_Host
                 });
 
             // Screamer can be used any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.SCR,
@@ -397,7 +397,7 @@ namespace ETS2_Button_Box_Host
                     IsActionValid = () => true,
                     Action = KeyboardController.InvokeKeyDown
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.SCR,
@@ -407,7 +407,7 @@ namespace ETS2_Button_Box_Host
                 });
 
             // Flash can be used any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.FLS,
@@ -415,7 +415,7 @@ namespace ETS2_Button_Box_Host
                     IsActionValid = () => true,
                     Action = KeyboardController.InvokeKeyDown
                 });
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.FLS,
@@ -447,27 +447,27 @@ namespace ETS2_Button_Box_Host
             //});
 
             // Engine brake can only be enabled when it's disabled
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.ENB,
                 ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
+                IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
                 Action = KeyboardController.InvokeKeyPress
             });
 
             // Engine brake can only be disabled when it's enabled
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.ENB,
                 ButtonPressType = ButtonPressType.Released,
-                IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
+                IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
                 Action = KeyboardController.InvokeKeyPress
             });
 
             // Retarder strengh can be decreased any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.RET1,
@@ -477,7 +477,7 @@ namespace ETS2_Button_Box_Host
             });
 
             // Retarder strengh can be increased any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.RET2,
@@ -487,7 +487,7 @@ namespace ETS2_Button_Box_Host
             });
 
             // Engine brake strengh can be decreased any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.ENB1,
@@ -497,7 +497,7 @@ namespace ETS2_Button_Box_Host
             });
 
             // Engine brake strengh can be increased any time
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.ENB2,
@@ -507,22 +507,22 @@ namespace ETS2_Button_Box_Host
             });
 
             // E-brake can only be engaged when it's disengaged
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.EB,
                 ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => !this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
+                IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
                 Action = KeyboardController.InvokeKeyPress
             });
 
             // E-brake can only be disengaged when it's engaged
-            this.buttonController.AddButtonAction(
+            this.ButtonController.AddButtonAction(
             new ButtonAction()
             {
                 Button = Button.EB,
                 ButtonPressType = ButtonPressType.Released,
-                IsActionValid = () => this.telemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
+                IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
                 Action = KeyboardController.InvokeKeyPress
             });
         }
@@ -535,7 +535,7 @@ namespace ETS2_Button_Box_Host
         private void doLedInterval(object state = null)
         {
             // Handle LED interval on the controller
-            this.ledController.HandleLedInterval();
+            this.LedController.HandleLedInterval();
 
             // Send LED state string to the box
             this.sendLedUpdate();
@@ -556,8 +556,8 @@ namespace ETS2_Button_Box_Host
                 return;
             }
 
-            // Otherwise send LED state string
-            this.serialController.SendLedState(this.ledController.GetLedStateString());
+            // Send LED state string
+            this.SerialController.SendLedState(this.LedController.GetLedStateString());
         }
 
         /// <summary>
@@ -568,10 +568,10 @@ namespace ETS2_Button_Box_Host
         /// <returns>True on successful connection, otherwise false</returns>
         public bool ConnectToBox(string comPortName)
         {
-            serialController.Connect(comPortName);
-            if (serialController.Handshake())
+            SerialController.Connect(comPortName);
+            if (SerialController.Handshake())
                 return true;
-            serialController.Disconnect();
+            SerialController.Disconnect();
             return false;
         }
     }
