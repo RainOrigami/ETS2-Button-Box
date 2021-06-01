@@ -25,7 +25,7 @@ namespace ETS2_Button_Box_Host
         /// Invoke a key press (key down and key up) event on the key resolved by buttonToKeyStroke from the specified ButtonAction
         /// </summary>
         /// <param name="buttonAction">Which button action has called for the invokation</param>
-        public static void InvokeKeyPress(ButtonAction buttonAction) => InvokeKeyPress(ButtonToKeyStroke[buttonAction.Button]);
+        public static void InvokeKeyPress(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates, ButtonAction buttonAction) => InvokeKeyPress(ButtonToKeyStroke[buttonAction.Button]);
 
         /// <summary>
         /// Invoke a key down (hold) event on the specified key stroke
@@ -37,7 +37,7 @@ namespace ETS2_Button_Box_Host
         /// Invoke a key down (hold) event on the key resolved by buttonToKeyStroke from the specified ButtonAction
         /// </summary>
         /// <param name="buttonAction">Which button action has called for the invokation</param>
-        public static void InvokeKeyDown(ButtonAction buttonAction) => InvokeKeyDown(ButtonToKeyStroke[buttonAction.Button]);
+        public static void InvokeKeyDown(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates, ButtonAction buttonAction) => InvokeKeyDown(ButtonToKeyStroke[buttonAction.Button]);
 
         /// <summary>
         /// Invoke a key up (release) event on the specified key stroke
@@ -49,7 +49,7 @@ namespace ETS2_Button_Box_Host
         /// Invoke a key up (release ) event on the key resolved by buttonToKeyStroke from the specified ButtonAction
         /// </summary>
         /// <param name="buttonAction">Which button action has called for the invokation</param>
-        public static void InvokeKeyUp(ButtonAction buttonAction) => InvokeKeyUp(ButtonToKeyStroke[buttonAction.Button]);
+        public static void InvokeKeyUp(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates, ButtonAction buttonAction) => InvokeKeyUp(ButtonToKeyStroke[buttonAction.Button]);
 
         /// <summary>
         /// Mapping of Button Box Buttons to Keyboard Buttons
@@ -85,7 +85,7 @@ namespace ETS2_Button_Box_Host
             { Button.VW1, Keyboard.DirectXKeyStrokes.DIK_1 },
             { Button.VW2, Keyboard.DirectXKeyStrokes.DIK_2 },
             { Button.VW3, Keyboard.DirectXKeyStrokes.DIK_3 },
-            { Button.VW4, Keyboard.DirectXKeyStrokes.DIK_4 },
+            { Button.VW4, Keyboard.DirectXKeyStrokes.DIK_0 },
             { Button.WI1, Keyboard.DirectXKeyStrokes.DIK_X },
             { Button.WI2, Keyboard.DirectXKeyStrokes.DIK_X },
             { Button.WI3, Keyboard.DirectXKeyStrokes.DIK_X },

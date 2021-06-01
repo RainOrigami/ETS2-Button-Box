@@ -46,10 +46,12 @@ namespace ETS2_Button_Box_Host
         public ButtonBoxController()
         {
             // Initialise controllers
-            this.ButtonController = new ButtonController();
+            this.TelemetryController = new TelemetryController();
+            this.ButtonController = new ButtonController(this.TelemetryController);
             this.LedController = new LEDController();
             this.SerialController = new SerialController();
-            this.TelemetryController = new TelemetryController();
+
+            this.initialiseButtonLayout();
 
             // Initialise button state change events
             this.SerialController.ButtonStateChangeReceived += this.ButtonController.ParseButtonString;
@@ -99,7 +101,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.PWR,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -109,7 +111,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.PWR,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.ElectricEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -119,7 +121,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.ENG,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -130,7 +132,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.ENG,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.EngineEnabled,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -140,7 +142,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.CCO,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -150,7 +152,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.CCO,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -160,7 +162,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.CCR,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -170,73 +172,73 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.CCR,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
-                    Action = a => KeyboardController.InvokeKeyPress(KeyboardController.ButtonToKeyStroke[Button.CCO])
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.DashboardValues.CruiseControl,
+                    Action = (n, p, a) => KeyboardController.InvokeKeyPress(KeyboardController.ButtonToKeyStroke[Button.CCO])
                 });
 
-            // Cruise control decrease (turn clockwise) can be used anytime
+            // Cruise control increase
             this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.CCS1,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => n[Button.CCS2],
                     Action = KeyboardController.InvokeKeyPress
                 });
 
-            // Cruise control increase (turn counterclockwise) can be used anytime
+            // Cruise control decrease
             this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
-                    Button = Button.CCS2,
+                    Button = Button.CCS1,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => !n[Button.CCS2],
+                    Action = (n, p, a) => KeyboardController.InvokeKeyPress(KeyboardController.ButtonToKeyStroke[Button.CCS2])
+                });
+
+            // Low gear range selection can only be done in high gear range
+            // TODO: figure out where we could get the current gear range status from
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.GR,
+                    ButtonPressType = ButtonPressType.Released,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
-            //// Low gear range selection can only be done in high gear range
-            //// TODO: figure out where we could get the current gear range status from
-            //this.buttonController.AddButtonAction(
-            //new ButtonAction()
-            //{
-            //    Button = Button.GR,
-            //    ButtonPressType = ButtonPressType.Released,
-            //    IsActionValid = () => ???,
-            //    Action = KeyboardController.InvokeKeyPress
-            //});
+            // High gear range selection can only be done in low gear range
+            // TODO: figure out where we could get the current gear range status from
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.GR,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
-            //// High gear range selection can only be done in low gear range
-            //// TODO: figure out where we could get the current gear range status from
-            //this.buttonController.AddButtonAction(
-            //new ButtonAction()
-            //{
-            //    Button = Button.GR,
-            //    ButtonPressType = ButtonPressType.Pressed,
-            //    IsActionValid = () => ???,
-            //    Action = KeyboardController.InvokeKeyPress
-            //});
+            // Differential can only be activated when it's inactive
+            // TODO: figure out where we could get the differential status from
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.DIF,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
-            //// Differential can only be activated when it's inactive
-            //// TODO: figure out where we could get the differential status from
-            //this.buttonController.AddButtonAction(
-            //new ButtonAction()
-            //{
-            //    Button = Button.DIF,
-            //    ButtonPressType = ButtonPressType.Pressed,
-            //    IsActionValid = () => ???,
-            //    Action = KeyboardController.InvokeKeyPress
-            //});
-
-            //// Differential can only be deactivated when it's active
-            //// TODO: figure out where we could get the differential status from
-            //this.buttonController.AddButtonAction(
-            //new ButtonAction()
-            //{
-            //    Button = Button.DIF,
-            //    ButtonPressType = ButtonPressType.Pressed,
-            //    IsActionValid = () => ???,
-            //    Action = KeyboardController.InvokeKeyPress
-            //});
+            // Differential can only be deactivated when it's active
+            // TODO: figure out where we could get the differential status from
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.DIF,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // View selector requires special attention
             this.ButtonController.AddButtonAction(
@@ -244,32 +246,32 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.VW1,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
-                    Action = this.ButtonController.ViewSelection
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
                 });
             this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW2,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
-                    Action = this.ButtonController.ViewSelection
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
                 });
             this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW3,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
-                    Action = this.ButtonController.ViewSelection
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
                 });
             this.ButtonController.AddButtonAction(
                 new ButtonAction()
                 {
                     Button = Button.VW4,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
-                    Action = this.ButtonController.ViewSelection
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
                 });
 
             // Hazards toggle any time
@@ -278,7 +280,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.INDH,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -288,7 +290,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.BC,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -298,7 +300,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.BC,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.Beacon,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -308,7 +310,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.WI1,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.WiperSelection
                 });
             this.ButtonController.AddButtonAction(
@@ -316,7 +318,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.WI2,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.WiperSelection
                 });
             this.ButtonController.AddButtonAction(
@@ -324,7 +326,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.WI3,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.WiperSelection
                 });
             this.ButtonController.AddButtonAction(
@@ -332,7 +334,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.WI4,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.WiperSelection
                 });
 
@@ -342,7 +344,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.LI1,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.LightsSelection
                 });
             this.ButtonController.AddButtonAction(
@@ -350,7 +352,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.LI2,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.LightsSelection
                 });
             this.ButtonController.AddButtonAction(
@@ -358,7 +360,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.LI3,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = this.ButtonController.LightsSelection
                 });
             this.ButtonController.AddButtonAction(
@@ -366,8 +368,16 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.LI4,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
-                    Action = this.ButtonController.LightsSelection
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.BeamHigh,
+                    Action = KeyboardController.InvokeKeyPress
+                });
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.LI4,
+                    ButtonPressType = ButtonPressType.Released,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.LightsValues.BeamHigh,
+                    Action = KeyboardController.InvokeKeyPress
                 });
 
             // Tow can be used any time
@@ -376,7 +386,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.TOW,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyPress
                 });
 
@@ -386,7 +396,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.HRN,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyDown
                 });
             this.ButtonController.AddButtonAction(
@@ -394,7 +404,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.HRN,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyUp
                 });
 
@@ -404,7 +414,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.SCR,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyDown
                 });
             this.ButtonController.AddButtonAction(
@@ -412,7 +422,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.SCR,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyUp
                 });
 
@@ -422,7 +432,7 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.FLS,
                     ButtonPressType = ButtonPressType.Pressed,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyDown
                 });
             this.ButtonController.AddButtonAction(
@@ -430,111 +440,111 @@ namespace ETS2_Button_Box_Host
                 {
                     Button = Button.FLS,
                     ButtonPressType = ButtonPressType.Released,
-                    IsActionValid = () => true,
+                    IsActionValid = (n, p, a) => true,
                     Action = KeyboardController.InvokeKeyUp
                 });
 
-            //// Trailer brake can only be enabled when it's disabled
-            //// TODO: figure out where to get the trailer brake status from
-            //this.buttonController.AddButtonAction(
-            //new ButtonAction()
-            //{
-            //    Button = Button.TB,
-            //    ButtonPressType = ButtonPressType.Pressed,
-            //    IsActionValid = () => ???,
-            //    Action = KeyboardController.InvokeKeyPress
-            //});
+            // Trailer brake can only be enabled when it's disabled
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.TB,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    // TODO: figure out where to get the trailer brake status from
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
-            //// Trailer brake can only be disabled when it's enabled
-            //// TODO: figure out where to get the trailer brake status from
-            //this.buttonController.AddButtonAction(
-            //new ButtonAction()
-            //{
-            //    Button = Button.TB,
-            //    ButtonPressType = ButtonPressType.Released,
-            //    IsActionValid = () => ???,
-            //    Action = KeyboardController.InvokeKeyPress
-            //});
+            // Trailer brake can only be disabled when it's enabled
+            this.ButtonController.AddButtonAction(
+                new ButtonAction()
+                {
+                    Button = Button.TB,
+                    ButtonPressType = ButtonPressType.Released,
+                    // TODO: figure out where to get the trailer brake status from
+                    IsActionValid = (n, p, a) => true,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // Engine brake can only be enabled when it's disabled
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.ENB,
-                ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.ENB,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // Engine brake can only be disabled when it's enabled
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.ENB,
-                ButtonPressType = ButtonPressType.Released,
-                IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.ENB,
+                    ButtonPressType = ButtonPressType.Released,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // Retarder strengh can be decreased any time
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.RET1,
-                ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => true,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.RET1,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => n[Button.RET2],
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // Retarder strengh can be increased any time
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.RET2,
-                ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => true,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.RET2,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => n[Button.RET1],
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // Engine brake strengh can be decreased any time
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.ENB1,
-                ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => true,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.ENB1,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => n[Button.ENB2],
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // Engine brake strengh can be increased any time
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.ENB2,
-                ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => true,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.ENB2,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => n[Button.ENB1],
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // E-brake can only be engaged when it's disengaged
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.EB,
-                ButtonPressType = ButtonPressType.Pressed,
-                IsActionValid = () => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.EB,
+                    ButtonPressType = ButtonPressType.Pressed,
+                    IsActionValid = (n, p, a) => !this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
+                    Action = KeyboardController.InvokeKeyPress
+                });
 
             // E-brake can only be disengaged when it's engaged
             this.ButtonController.AddButtonAction(
-            new ButtonAction()
-            {
-                Button = Button.EB,
-                ButtonPressType = ButtonPressType.Released,
-                IsActionValid = () => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
-                Action = KeyboardController.InvokeKeyPress
-            });
+                new ButtonAction()
+                {
+                    Button = Button.EB,
+                    ButtonPressType = ButtonPressType.Released,
+                    IsActionValid = (n, p, a) => this.TelemetryController.LastTelemetryData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake,
+                    Action = KeyboardController.InvokeKeyPress
+                });
         }
         #endregion
 
