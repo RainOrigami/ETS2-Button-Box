@@ -41,10 +41,10 @@
 #define LED_F8 19
 #define LED_F9 21
 #define LED_F10 23
-#define LED_UNUSED1 8
-#define LED_UNUSED2 9
-#define LED_UNUSED3 10
-#define LED_UNUSED4 11
+#define LED_BC 8
+#define LED_TB 9
+#define LED_UNUSED1 10
+#define LED_UNUSED2 11
 
 // Pins for LED shift registers
 #define PIN_BTN_SR_LOAD 8	// PL

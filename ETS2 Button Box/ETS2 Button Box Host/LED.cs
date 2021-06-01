@@ -38,10 +38,9 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Trailer brake status
         /// </summary>
-        TB = 26,
-        // TODO: remember!
+        RET = 26,
         /// <summary>
-        /// I forgot.
+        /// Brake light
         /// </summary>
         BR = 24,
         /// <summary>
@@ -124,13 +123,19 @@ namespace ETS2_Button_Box_Host
         /// Fuel 100%
         /// </summary>
         F10 = 23,
+        /// <summary>
+        /// Beacon status
+        /// </summary>
+        BC = 8,
+        /// <summary>
+        /// Trailer brake status
+        /// </summary>
+        TB = 9,
 
         /// <summary>
         /// Unused pins of shift registers
         /// </summary>
-        UNUSED1 = 8,
-        UNUSED2 = 9,
-        UNUSED3 = 10,
-        UNUSED4 = 11
+        UNUSED1 = 10,
+        UNUSED2 = 11
     }
 }

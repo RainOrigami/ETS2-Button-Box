@@ -166,7 +166,7 @@ namespace ETS2_Button_Box_Host
             this.SetLedState(LED.EB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake);
 
             // Handle retarder LED
-            this.SetLedState(LED.TB, data.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel > 0);
+            this.SetLedState(LED.RET, data.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel > 0);
 
             // Handle engine fault LED
             this.SetLedState(LED.EF, data.TruckValues.CurrentValues.DamageValues.Engine > 0.25);
@@ -175,7 +175,7 @@ namespace ETS2_Button_Box_Host
             this.SetLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh);
 
             // Handle beacon LED
-            //this.setLedState(LED.BC, TruckValues.CurrentValues.LightsValues.Beacon);
+            this.SetLedState(LED.BC, data.TruckValues.CurrentValues.LightsValues.Beacon);
 
             // Handle indicators
             this.SetLedState(LED.IND_H, data.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn && data.TruckValues.CurrentValues.LightsValues.BlinkerRightOn);
