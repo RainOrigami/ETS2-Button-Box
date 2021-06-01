@@ -201,9 +201,9 @@ void handleLedFromSerial() {
 
 	if (data.startsWith("LED[") && data.endsWith("]")) {
 		// LED event
-
+		
 		// Remove data indicator
-		data = data.substring(4, data.length() - 2);
+		data = data.substring(4, data.length() - 1);
 
 		// Check that received data is of equal length as the LED IO definitions
 		if (LED_COUNT != data.length())
