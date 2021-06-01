@@ -64,9 +64,6 @@ namespace ETS2_Button_Box_Host
             // Initialise regular expressions
             this.buttonLineRegex = new Regex("^BTN\\[([01]{40})\\]$");
             this.handshakeLineRegex = new Regex("^HANDSHAKE$");
-
-            // Initialise handshake task
-            this.handshakeCompletionSource = new TaskCompletionSource<bool>();
         }
 
         /// <summary>
@@ -95,7 +92,7 @@ namespace ETS2_Button_Box_Host
                 if (match.Success)
                 {
                     // Indicate a sucessful handshake completion
-                    this.handshakeCompletionSource.SetResult(true);
+                    this.handshakeCompletionSource?.TrySetResult(true);
                     return;
                 }
 
@@ -113,14 +110,16 @@ namespace ETS2_Button_Box_Host
             if (!this.buttonBoxPort.IsOpen)
                 return false;
 
-            // Start the handshake completion source task
-            this.handshakeCompletionSource.Task.Start();
-
             // Send a handshake
             this.buttonBoxPort.WriteLine("HANDSHAKE");
 
+            // Initialise handshake task
+            this.handshakeCompletionSource = new TaskCompletionSource<bool>();
+
             // Wait for a maximum of 200ms for the handshake to complete, otherwise fail the handshake
-            return this.handshakeCompletionSource.Task.Wait(200);
+            bool handshakeResult = this.handshakeCompletionSource.Task.Wait(200);
+
+            return handshakeResult;
         }
 
         public void Disconnect()
