@@ -144,6 +144,10 @@ namespace ETS2_Button_Box_Host
         /// <param name="comPortName">COM port name to connect to</param>
         public void Connect(string comPortName)
         {
+            // Reconnect when already connected
+            if (this.buttonBoxPort.IsOpen)
+                this.Disconnect();
+
             // Assign COM port and open connection to button box
             this.buttonBoxPort.PortName = comPortName;
             this.buttonBoxPort.Open();
