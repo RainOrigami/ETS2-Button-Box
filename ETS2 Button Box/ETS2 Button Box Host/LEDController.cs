@@ -172,7 +172,7 @@ namespace ETS2_Button_Box_Host
             this.SetLedState(LED.EF, data.TruckValues.CurrentValues.DamageValues.Engine > 0.25);
 
             // Handle high beam/flashers LED
-            this.SetLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh);
+            this.SetLedState(LED.FLS, data.TruckValues.CurrentValues.LightsValues.BeamHigh || this.flasher);
 
             // Handle beacon LED
             this.SetLedState(LED.BC, data.TruckValues.CurrentValues.LightsValues.Beacon);
@@ -186,6 +186,8 @@ namespace ETS2_Button_Box_Host
             this.SetLedState(LED.TOW, data.TrailerValues.Any(t => t.Attached));
         }
 
+        private bool flasher = false;
+
         public void HandleChangedButtonState(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates)
         {
             // Handle horn LED
@@ -196,6 +198,8 @@ namespace ETS2_Button_Box_Host
 
             // Handle flasher LED
             this.SetLedState(LED.FLS, newButtonStates[Button.FLS]);
+            this.flasher = newButtonStates[Button.FLS];
+
         }
 
         /// <summary>
