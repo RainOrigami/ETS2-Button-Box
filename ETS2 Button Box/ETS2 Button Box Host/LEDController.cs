@@ -200,6 +200,14 @@ namespace ETS2_Button_Box_Host
             this.SetLedState(LED.FLS, newButtonStates[Button.FLS]);
             this.flasher = newButtonStates[Button.FLS];
 
+            // Handle trailer brake LED
+            this.SetLedState(LED.TB, newButtonStates[Button.TB]);
+
+            // Handle differential LED
+            this.SetLedState(LED.DIF, newButtonStates[Button.DIF]);
+
+            // Handle gear range LED
+            this.SetLedState(LED.GR, newButtonStates[Button.GR]);
         }
 
         /// <summary>
