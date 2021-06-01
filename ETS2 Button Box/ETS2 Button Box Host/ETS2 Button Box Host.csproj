@@ -73,10 +73,14 @@
       <DependentUpon>ETS2ButtonBoxHost.cs</DependentUpon>
     </Compile>
     <Compile Include="Keyboard.cs" />
+    <Compile Include="KeyboardController.cs" />
     <Compile Include="LED.cs" />
     <Compile Include="LEDController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialController.cs" />
+    <Compile Include="ButtonBoxController.cs" />
+    <Compile Include="TelemetryController.cs" />
     <EmbeddedResource Include="ETS2ButtonBoxHost.resx">
       <DependentUpon>ETS2ButtonBoxHost.cs</DependentUpon>
     </EmbeddedResource>
