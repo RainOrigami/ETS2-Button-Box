@@ -42,6 +42,9 @@ namespace ETS2_Button_Box_Host
         {
             this.cbCOMPort.Items.Clear();
             this.cbCOMPort.Items.AddRange(SerialPort.GetPortNames());
+            
+            // Preselect last item
+            this.cbCOMPort.SelectedIndex = this.cbCOMPort.Items.Count - 1;
         }
 
         /// <summary>
