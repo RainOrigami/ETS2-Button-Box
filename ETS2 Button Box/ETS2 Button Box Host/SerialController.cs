@@ -43,6 +43,11 @@ namespace ETS2_Button_Box_Host
         TaskCompletionSource<bool> handshakeCompletionSource;
 
         /// <summary>
+        /// Returns true when serial connection is open
+        /// </summary>
+        public bool IsConnected => this.buttonBoxPort.IsOpen;
+
+        /// <summary>
         /// Initialise the serial controller
         /// </summary>
         public SerialController()
