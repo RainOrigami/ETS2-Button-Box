@@ -166,7 +166,7 @@ unsigned long lastReceiveTime = 0;
 
 void handleLedFromSerial() {
 	// Read serial data until the delimiter character is reached
-	String data = Serial.readStringUntil('\x00');
+	String data = Serial.readStringUntil('\n');
 	if (data.length() == 0)
 	{
 		// Check if no data has been received for longer than the timeout
