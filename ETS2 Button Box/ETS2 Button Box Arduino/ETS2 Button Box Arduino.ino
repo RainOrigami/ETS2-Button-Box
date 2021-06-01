@@ -165,8 +165,13 @@ unsigned long lastReceiveTime = 0;
 #define RECEIVETIMEOUT 2000
 
 void handleLedFromSerial() {
-	// Read serial data until the delimiter character is reached
-	String data = Serial.readStringUntil('\n');
+	String data;
+
+	// Read serial data, if available, until the delimiter character is reached
+	if (Serial.available() > 0) 
+		data = Serial.readStringUntil('\n');
+
+	// Check if any data has been received
 	if (data.length() == 0)
 	{
 		// Check if no data has been received for longer than the timeout
@@ -290,7 +295,6 @@ void loop() {
 	sendButtonData();
 
 	handleLedFromSerial();
-
 	writeLEDs();
 }
 #pragma endregion
