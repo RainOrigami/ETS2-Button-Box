@@ -42,7 +42,8 @@ namespace ETS2_Button_Box_Host
         {
             this.LastTelemetryData = data;
 
-            this.TelemetryChanged?.Invoke(this.LastTelemetryData);
+            if (this.IsConnected)
+                this.TelemetryChanged?.Invoke(this.LastTelemetryData);
         }
 
     }
