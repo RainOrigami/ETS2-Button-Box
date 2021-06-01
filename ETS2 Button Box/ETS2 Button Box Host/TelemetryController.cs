@@ -13,10 +13,6 @@ namespace ETS2_Button_Box_Host
         public delegate void OnTelemetryChanged(SCSTelemetry telemetry);
         public event OnTelemetryChanged TelemetryChanged;
 
-        private static readonly TimeSpan TelemetryTimeout = new TimeSpan(0, 0, 2);
-
-        private DateTime lastReceivedTelemetryDataTime = DateTime.MinValue;
-
         /// <summary>
         /// ETS2 SDK client
         /// </summary>
@@ -27,7 +23,10 @@ namespace ETS2_Button_Box_Host
         /// </summary>
         public SCSTelemetry LastTelemetryData { get; private set; }
 
-        public bool IsTelemetryConnected => (DateTime.Now - this.lastReceivedTelemetryDataTime) > TelemetryTimeout;
+        /// <summary>
+        /// Returns true if telemetry data was received within TelemetryTimeout
+        /// </summary>
+        public bool IsConnected => this.LastTelemetryData != null && this.LastTelemetryData.SdkActive;
 
         public TelemetryController()
         {
@@ -41,7 +40,6 @@ namespace ETS2_Button_Box_Host
         /// </summary>
         private void telemetry_Data(SCSTelemetry data, bool newTimestamp)
         {
-            this.lastReceivedTelemetryDataTime = DateTime.Now;
             this.LastTelemetryData = data;
 
             this.TelemetryChanged?.Invoke(this.LastTelemetryData);
