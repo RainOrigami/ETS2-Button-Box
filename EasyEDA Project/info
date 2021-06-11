@@ -4,7 +4,7 @@
   "name": "ETS2ButtonBox",
   "content": "",
   "created_at": "2021-04-28 18:24:42",
-  "updated_at": "2021-06-11 17:47:04",
+  "updated_at": "2021-06-11 17:55:22",
   "stick": "",
   "documents": [
     {
@@ -327,11 +327,11 @@
         "5da5d801f5c14caca87deab42126251a": 1
       },
       "BOM": [],
-      "updateTime": 1623426424,
+      "updateTime": 1623426922,
       "createTime": 1619627364,
       "histories": [],
       "created_at": "2021-04-28 18:29:24",
-      "updated_at": "2021-06-11 17:47:04"
+      "updated_at": "2021-06-11 17:55:22"
     }
   ],
   "sort": [],
