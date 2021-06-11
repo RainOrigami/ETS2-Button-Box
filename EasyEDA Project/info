@@ -4,7 +4,7 @@
   "name": "ETS2ButtonBox",
   "content": "",
   "created_at": "2021-04-28 18:24:42",
-  "updated_at": "2021-05-24 17:52:40",
+  "updated_at": "2021-06-11 17:47:04",
   "stick": "",
   "documents": [
     {
@@ -15,13 +15,10 @@
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
-        "293ce3e2836ee2e31c349a297b042a62": 8,
+        "293ce3e2836ee2e31c349a297b042a62": 11,
         "ca94110f4544769d36adda4b0515e409": 3,
         "9386d776ad1881e0718a6fa711cc746d": 5,
-        "77d44a4d217d0e61bbba7ea503d814a3": 4,
-        "3e32743454314abfa7a3b072b0f70c1d": 1,
-        "342564151e8e4263aad416ea5c4e96a6": 1,
-        "6209bffd4cc843caadb4789798c3f112": 2,
+        "77d44a4d217d0e61bbba7ea503d814a3": 5,
         "759c7d15a31446c4bfbc1edbae5cd074": 1,
         "fa33d4808b42d46b96893a5da4a98304": 1,
         "81ba4f7142e353a27e69273c9b0ee82a": 1,
@@ -29,9 +26,11 @@
         "320400870eb297eb1df26973a3a5a9f4": 1,
         "2e83b68c877909257b07a0358bddc1b8": 1,
         "569972a699f76c4fd1fd6f0fa24242d6": 4,
-        "5947d2fa634203d12e59fdfcf9e29a4e": 9,
+        "5947d2fa634203d12e59fdfcf9e29a4e": 10,
         "6c71cc35555d4db78b35d5f358f11fcd": 1,
-        "6acefd628231d8c58e316bd1ce6c7465": 1
+        "6acefd628231d8c58e316bd1ce6c7465": 1,
+        "086e3924d03c4cba8b23725399a8348c": 2,
+        "6209bffd4cc843caadb4789798c3f112": 2
       },
       "BOM": [
         [
@@ -56,20 +55,6 @@
             "BOM_Paste Type": "base",
             "puuid": "3665faf5c7824047877c19fd71b91289",
             "uuid": "2e83b68c877909257b07a0358bddc1b8"
-          }
-        ],
-        [
-          "Button Connector Bank",
-          1,
-          "BUTTON CONNECTION BANK",
-          "CST1",
-          {
-            "BOM_Manufacturer": "",
-            "BOM_Manufacturer Part": "",
-            "BOM_Supplier Part": "",
-            "BOM_Supplier": "",
-            "puuid": "2de30498c9e54441ab20e5b98fc42236",
-            "uuid": "3e32743454314abfa7a3b072b0f70c1d"
           }
         ],
         [
@@ -103,9 +88,9 @@
         ],
         [
           "74HC595D,118",
-          4,
+          5,
           "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
-          "U5,U6,U3,U4",
+          "U6,U3,U7,U5,U4",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "Nexperia",
@@ -136,10 +121,24 @@
           }
         ],
         [
+          "SBH11-PBPC-D20-ST-BK",
+          2,
+          "SBH11-PBPC-D20-ST-BK",
+          "LED,BTN",
+          {
+            "BOM_Manufacturer": "SULLINS CONNECTOR SULUTIONS",
+            "BOM_Manufacturer Part": "SFH11-PBPC-D20-ST-BK",
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "puuid": "8863ff03d2cf4595840759da75614eaa",
+            "uuid": "086e3924d03c4cba8b23725399a8348c"
+          }
+        ],
+        [
           "1K",
-          8,
+          11,
           "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
-          "RN6,RN1,RN7,RN8,RN2,RN5,RN4,RN3",
+          "RN5,RN6,RN7,RN8,RN10,RN11,RN9,RN1,RN2,RN3,RN4",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "UniOhm",
@@ -169,9 +168,9 @@
         ],
         [
           "10K",
-          9,
+          10,
           "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
-          "RN15,RN12,RN13,RN11,RN17,RN10,RN16,RN9,RN14",
+          "RN17,RN20,RN19,RN18,RN21,RN13,RN14,RN15,RN16,RN12",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "UniOhm",
@@ -185,10 +184,10 @@
           }
         ],
         [
-          "Connection Pad",
+          "Connector",
           2,
           "CONNECTION PAD",
-          "U13,U14",
+          "OUTPUT,INPUT",
           {
             "BOM_Manufacturer": "",
             "BOM_Manufacturer Part": "",
@@ -202,7 +201,7 @@
           "74HC165D,653",
           5,
           "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
-          "U9,U10,U8,U11,U7",
+          "U12,U11,U10,U9,U8",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "Nexperia",
@@ -219,7 +218,7 @@
           "10pF",
           4,
           "C0402",
-          "C5,C7,C8,C6",
+          "C8,C5,C7,C6",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer": "SAMSUNG",
@@ -266,24 +265,10 @@
           }
         ],
         [
-          "LED Connector Bank",
-          1,
-          "LED CONNECTOR BANK",
-          "CST2",
-          {
-            "BOM_Manufacturer": "",
-            "BOM_Manufacturer Part": "",
-            "BOM_Supplier Part": "",
-            "BOM_Supplier": "",
-            "puuid": "ae50020f4ae34830b375aff54fef553f",
-            "uuid": "342564151e8e4263aad416ea5c4e96a6"
-          }
-        ],
-        [
           "100nF",
           3,
           "C0402",
-          "C9,C1,C4",
+          "C4,C9,C1",
           {
             "BOM_Supplier": "LCSC",
             "BOM_Manufacturer Part": "CL05B104KO5NNNC",
@@ -314,11 +299,11 @@
           }
         ]
       ],
-      "updateTime": 1621612205,
+      "updateTime": 1623426323,
       "createTime": 1619627103,
       "histories": [],
       "created_at": "2021-04-28 18:25:03",
-      "updated_at": "2021-05-21 17:50:05"
+      "updated_at": "2021-06-11 17:45:23"
     },
     {
       "uuid": "895efa7dce07f1d05394f0d7a682a7b4",
@@ -330,29 +315,28 @@
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
-        "57bde458a1df48daae5091ee0fe1d27c": 1,
+        "bc30752f83694054baa42649cbb6b7d0": 10,
+        "37d8bc5691574cc580abf6089e86850d": 21,
         "63cd1ae5b3f8412aaa1d5663f646bdb9": 2,
-        "37d8bc5691574cc580abf6089e86850d": 17,
+        "8863ff03d2cf4595840759da75614eaa": 2,
+        "57bde458a1df48daae5091ee0fe1d27c": 1,
         "f8eca159cd18407f9d5df374a1c2badf": 9,
         "3665faf5c7824047877c19fd71b91289": 2,
         "1cecf805f9e04bff9e9189fdeb0f6996": 1,
-        "bc30752f83694054baa42649cbb6b7d0": 9,
         "9c6dab9dc91e4b929269cb3454d6d713": 1,
-        "ae50020f4ae34830b375aff54fef553f": 1,
-        "2de30498c9e54441ab20e5b98fc42236": 1,
         "5da5d801f5c14caca87deab42126251a": 1
       },
       "BOM": [],
-      "updateTime": 1621871560,
+      "updateTime": 1623426424,
       "createTime": 1619627364,
       "histories": [],
       "created_at": "2021-04-28 18:29:24",
-      "updated_at": "2021-05-24 17:52:40"
+      "updated_at": "2021-06-11 17:47:04"
     }
   ],
   "sort": [],
   "title": "ETS2ButtonBox",
   "foldername": "ETS2ButtonBox",
   "schfilename": "ETS2ButtonBox.json",
-  "schfilemtime": 1621612205402
+  "schfilemtime": 1623426324044
 }
