@@ -81,7 +81,7 @@ ETS2 uses the Telemetry SDK to provide information about the game and the truck 
 
 # How to get a button box
 
-**The box is currently under development. Please be patient until it has been sufficiently tested.** Expected release date: December 2021
+**The box is currently under development. Please be patient until it has been sufficiently tested.** Expected release date: Whenever the part shortage is finally over q_q
 
 The box will be available as a set for self-assemly on eBay for the price of the parts, shipping and a small 5€ fee for supporting the creator. Some minor soldering and box assembly will be required.
 
