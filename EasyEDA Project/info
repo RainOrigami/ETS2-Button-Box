@@ -1,10 +1,10 @@
 {
   "uuid": "320d48e0c53129fa8025980d82841b11",
-  "path": "Offline/ETS2ButtonBox",
-  "name": "ETS2ButtonBox",
+  "path": "Offline/EasyEDA%20Project",
+  "name": "EasyEDA Project",
   "content": "",
   "created_at": "2021-04-28 18:24:42",
-  "updated_at": "2021-07-22 21:34:54",
+  "updated_at": "2022-05-16 16:31:07",
   "stick": "",
   "documents": [
     {
@@ -16,7 +16,7 @@
       "thumb": "/images/thumb-default.png",
       "components": {
         "293ce3e2836ee2e31c349a297b042a62": 11,
-        "ca94110f4544769d36adda4b0515e409": 3,
+        "ca94110f4544769d36adda4b0515e409": 4,
         "9386d776ad1881e0718a6fa711cc746d": 5,
         "77d44a4d217d0e61bbba7ea503d814a3": 5,
         "759c7d15a31446c4bfbc1edbae5cd074": 1,
@@ -28,8 +28,7 @@
         "6c71cc35555d4db78b35d5f358f11fcd": 1,
         "086e3924d03c4cba8b23725399a8348c": 2,
         "6209bffd4cc843caadb4789798c3f112": 2,
-        "f71b49e2ebee4bee8eff25c816c2462c": 1,
-        "6acefd628231d8c58e316bd1ce6c7465": 1
+        "f71b49e2ebee4bee8eff25c816c2462c": 1
       },
       "BOM": [
         [
@@ -40,49 +39,20 @@
           "CustomPara"
         ],
         [
-          "10nF",
-          1,
+          "100nF",
+          3,
           "C0402",
-          "C3",
+          "C1,C4,C9",
           {
             "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer Part": "CL05B103KB5NNNC",
+            "BOM_Manufacturer Part": "CL05B104KO5NNNC",
             "BOM_Manufacturer": "SAMSUNG",
-            "BOM_Supplier Part": "C15195",
-            "BOM_JLCPCB Part Class": "Basic Part",
-            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
-            "uuid": "6acefd628231d8c58e316bd1ce6c7465"
-          }
-        ],
-        [
-          "SPI_Header",
-          1,
-          "ISP_HEADER",
-          "SPI",
-          {
-            "BOM_Manufacturer": "",
-            "BOM_Manufacturer Part": "",
-            "BOM_Supplier Part": "",
-            "BOM_Supplier": "",
-            "puuid": "5da5d801f5c14caca87deab42126251a",
-            "uuid": "6c71cc35555d4db78b35d5f358f11fcd"
-          }
-        ],
-        [
-          "74HC595D,118",
-          5,
-          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
-          "U7,U5,U6,U3,U4",
-          {
-            "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer": "Nexperia",
-            "BOM_Manufacturer Part": "74HC595D,118",
-            "BOM_Supplier Part": "C5947",
+            "BOM_Supplier Part": "C1525",
             "BOM_JLCPCB SMD": "Yes",
             "BOM_LCSC Assembly": "Yes",
             "BOM_Paste Type": "base",
-            "puuid": "bc30752f83694054baa42649cbb6b7d0",
-            "uuid": "77d44a4d217d0e61bbba7ea503d814a3"
+            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
+            "uuid": "ca94110f4544769d36adda4b0515e409"
           }
         ],
         [
@@ -103,97 +73,18 @@
           }
         ],
         [
-          "SBH11-PBPC-D20-ST-BK",
-          2,
-          "SBH11-PBPC-D20-ST-BK",
-          "LED,BTN",
-          {
-            "BOM_Manufacturer": "SULLINS CONNECTOR SULUTIONS",
-            "BOM_Manufacturer Part": "SFH11-PBPC-D20-ST-BK",
-            "BOM_Supplier Part": "",
-            "BOM_Supplier": "",
-            "puuid": "8863ff03d2cf4595840759da75614eaa",
-            "uuid": "086e3924d03c4cba8b23725399a8348c"
-          }
-        ],
-        [
-          "1K",
-          11,
-          "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
-          "RN2,RN3,RN4,RN5,RN6,RN7,RN8,RN11,RN10,RN1,RN9",
-          {
-            "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer": "UniOhm",
-            "BOM_Manufacturer Part": "4D02WGJ0102TCE",
-            "BOM_Supplier Part": "C25726",
-            "BOM_JLCPCB SMD": "Yes",
-            "BOM_LCSC Assembly": "Yes",
-            "BOM_Paste Type": "base",
-            "puuid": "37d8bc5691574cc580abf6089e86850d",
-            "uuid": "293ce3e2836ee2e31c349a297b042a62"
-          }
-        ],
-        [
-          "UX60A-MB-5ST",
+          "100nF",
           1,
-          "USB-MINI-SMD_UX60A-MB-5ST",
-          "USB",
+          "C0402_NEW",
+          "C3",
           {
             "BOM_Supplier": "LCSC",
-            "BOM_Supplier Part": "C719028",
-            "BOM_Manufacturer": "HRS(Hirose)",
-            "BOM_Manufacturer Part": "UX60A-MB-5ST",
-            "BOM_Paste Type": "expand",
-            "puuid": "1cecf805f9e04bff9e9189fdeb0f6996",
-            "uuid": "759c7d15a31446c4bfbc1edbae5cd074"
-          }
-        ],
-        [
-          "10K",
-          10,
-          "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
-          "RN17,RN13,RN14,RN15,RN16,RN12,RN18,RN19,RN20,RN21",
-          {
-            "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer": "UniOhm",
-            "BOM_Manufacturer Part": "4D02WGJ0103TCE",
-            "BOM_Supplier Part": "C25725",
-            "BOM_JLCPCB SMD": "Yes",
-            "BOM_LCSC Assembly": "Yes",
-            "BOM_Paste Type": "base",
-            "puuid": "37d8bc5691574cc580abf6089e86850d",
-            "uuid": "5947d2fa634203d12e59fdfcf9e29a4e"
-          }
-        ],
-        [
-          "Connector",
-          2,
-          "CONNECTION PAD",
-          "INPUT,OUTPUT",
-          {
-            "BOM_Manufacturer": "",
-            "BOM_Manufacturer Part": "",
-            "BOM_Supplier Part": "",
-            "BOM_Supplier": "",
-            "puuid": "63cd1ae5b3f8412aaa1d5663f646bdb9",
-            "uuid": "6209bffd4cc843caadb4789798c3f112"
-          }
-        ],
-        [
-          "74HC165D,653",
-          5,
-          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
-          "U11,U12,U8,U9,U10",
-          {
-            "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer": "Nexperia",
-            "BOM_Manufacturer Part": "74HC165D,653",
-            "BOM_Supplier Part": "C5613",
-            "BOM_JLCPCB SMD": "Yes",
-            "BOM_LCSC Assembly": "Yes",
-            "BOM_Paste Type": "base",
-            "puuid": "bc30752f83694054baa42649cbb6b7d0",
-            "uuid": "9386d776ad1881e0718a6fa711cc746d"
+            "BOM_Manufacturer Part": "CL05B104KO5NNNC",
+            "BOM_Manufacturer": "SAMSUNG",
+            "BOM_Supplier Part": "C1525",
+            "BOM_JLCPCB Part Class": "Basic Part",
+            "puuid": "176eead66a5c45e698aceb33a5f6fe97",
+            "uuid": "ca94110f4544769d36adda4b0515e409"
           }
         ],
         [
@@ -214,37 +105,37 @@
           }
         ],
         [
-          "16MHz",
-          1,
-          "OSC-SMD_4P-L3.2-W2.5-BL",
-          "X2",
+          "1K",
+          11,
+          "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
+          "RN1,RN2,RN3,RN4,RN5,RN6,RN7,RN8,RN9,RN10,RN11",
           {
             "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer": "YXC",
-            "BOM_Manufacturer Part": "X322516MLB4SI",
-            "BOM_Supplier Part": "C13738",
+            "BOM_Manufacturer": "UniOhm",
+            "BOM_Manufacturer Part": "4D02WGJ0102TCE",
+            "BOM_Supplier Part": "C25726",
             "BOM_JLCPCB SMD": "Yes",
             "BOM_LCSC Assembly": "Yes",
             "BOM_Paste Type": "base",
-            "puuid": "3665faf5c7824047877c19fd71b91289",
-            "uuid": "320400870eb297eb1df26973a3a5a9f4"
+            "puuid": "37d8bc5691574cc580abf6089e86850d",
+            "uuid": "293ce3e2836ee2e31c349a297b042a62"
           }
         ],
         [
-          "100nF",
-          3,
-          "C0402",
-          "C4,C1,C9",
+          "10K",
+          10,
+          "RES-ARRAY-SMD_0402-8P-L2.0-W1.0-BL",
+          "RN12,RN13,RN14,RN15,RN16,RN17,RN18,RN19,RN20,RN21",
           {
             "BOM_Supplier": "LCSC",
-            "BOM_Manufacturer Part": "CL05B104KO5NNNC",
-            "BOM_Manufacturer": "SAMSUNG",
-            "BOM_Supplier Part": "C1525",
+            "BOM_Manufacturer": "UniOhm",
+            "BOM_Manufacturer Part": "4D02WGJ0103TCE",
+            "BOM_Supplier Part": "C25725",
             "BOM_JLCPCB SMD": "Yes",
             "BOM_LCSC Assembly": "Yes",
             "BOM_Paste Type": "base",
-            "puuid": "f8eca159cd18407f9d5df374a1c2badf",
-            "uuid": "ca94110f4544769d36adda4b0515e409"
+            "puuid": "37d8bc5691574cc580abf6089e86850d",
+            "uuid": "5947d2fa634203d12e59fdfcf9e29a4e"
           }
         ],
         [
@@ -278,13 +169,79 @@
             "puuid": "9c6dab9dc91e4b929269cb3454d6d713",
             "uuid": "fa33d4808b42d46b96893a5da4a98304"
           }
+        ],
+        [
+          "74HC595D,118",
+          5,
+          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
+          "U3,U4,U5,U6,U7",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "Nexperia",
+            "BOM_Manufacturer Part": "74HC595D,118",
+            "BOM_Supplier Part": "C5947",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "bc30752f83694054baa42649cbb6b7d0",
+            "uuid": "77d44a4d217d0e61bbba7ea503d814a3"
+          }
+        ],
+        [
+          "74HC165D,653",
+          5,
+          "SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL",
+          "U8,U9,U10,U11,U12",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "Nexperia",
+            "BOM_Manufacturer Part": "74HC165D,653",
+            "BOM_Supplier Part": "C5613",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "bc30752f83694054baa42649cbb6b7d0",
+            "uuid": "9386d776ad1881e0718a6fa711cc746d"
+          }
+        ],
+        [
+          "UX60A-MB-5ST",
+          1,
+          "USB-MINI-SMD_UX60A-MB-5ST",
+          "USB",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Supplier Part": "C719028",
+            "BOM_Manufacturer": "HRS(Hirose)",
+            "BOM_Manufacturer Part": "UX60A-MB-5ST",
+            "BOM_Paste Type": "expand",
+            "puuid": "1cecf805f9e04bff9e9189fdeb0f6996",
+            "uuid": "759c7d15a31446c4bfbc1edbae5cd074"
+          }
+        ],
+        [
+          "16MHz",
+          1,
+          "OSC-SMD_4P-L3.2-W2.5-BL",
+          "X2",
+          {
+            "BOM_Supplier": "LCSC",
+            "BOM_Manufacturer": "YXC",
+            "BOM_Manufacturer Part": "X322516MLB4SI",
+            "BOM_Supplier Part": "C13738",
+            "BOM_JLCPCB SMD": "Yes",
+            "BOM_LCSC Assembly": "Yes",
+            "BOM_Paste Type": "base",
+            "puuid": "3665faf5c7824047877c19fd71b91289",
+            "uuid": "320400870eb297eb1df26973a3a5a9f4"
+          }
         ]
       ],
-      "updateTime": 1626980899,
+      "updateTime": 1652710525,
       "createTime": 1619627103,
       "histories": [],
       "created_at": "2021-04-28 18:25:03",
-      "updated_at": "2021-07-22 21:08:19"
+      "updated_at": "2022-05-16 16:15:25"
     },
     {
       "uuid": "895efa7dce07f1d05394f0d7a682a7b4",
@@ -296,28 +253,29 @@
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
-        "f8eca159cd18407f9d5df374a1c2badf": 7,
+        "176eead66a5c45e698aceb33a5f6fe97": 1,
+        "1cecf805f9e04bff9e9189fdeb0f6996": 1,
+        "f8eca159cd18407f9d5df374a1c2badf": 6,
         "118a205096a1444195e08feff716c648": 1,
         "bc30752f83694054baa42649cbb6b7d0": 10,
         "37d8bc5691574cc580abf6089e86850d": 21,
         "63cd1ae5b3f8412aaa1d5663f646bdb9": 2,
         "8863ff03d2cf4595840759da75614eaa": 2,
         "3665faf5c7824047877c19fd71b91289": 1,
-        "1cecf805f9e04bff9e9189fdeb0f6996": 1,
         "5da5d801f5c14caca87deab42126251a": 1,
         "9c6dab9dc91e4b929269cb3454d6d713": 1
       },
       "BOM": [],
-      "updateTime": 1626982494,
+      "updateTime": 1652711467,
       "createTime": 1619627364,
       "histories": [],
       "created_at": "2021-04-28 18:29:24",
-      "updated_at": "2021-07-22 21:34:54"
+      "updated_at": "2022-05-16 16:31:07"
     }
   ],
   "sort": [],
-  "title": "ETS2ButtonBox",
-  "foldername": "ETS2ButtonBox",
+  "title": "EasyEDA Project",
+  "foldername": "EasyEDA Project",
   "schfilename": "ETS2ButtonBox.json",
-  "schfilemtime": 1626980899211
+  "schfilemtime": 1652710525509
 }
