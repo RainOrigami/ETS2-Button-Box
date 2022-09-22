@@ -1,9 +1,4 @@
 ﻿using SCSSdkClient.Object;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ETS2_Button_Box_Host
 {
@@ -37,6 +32,11 @@ namespace ETS2_Button_Box_Host
         private Dictionary<LED, bool> ledStates;
 
         /// <summary>
+        /// Map of all LED default colors
+        /// </summary>
+        private Dictionary<LED, Color> ledDefaultColors;
+
+        /// <summary>
         /// Initialise LED controller
         /// </summary>
         public LEDController()
@@ -44,9 +44,25 @@ namespace ETS2_Button_Box_Host
             // Initialise the LED states map
             this.ledStates = new Dictionary<LED, bool>();
 
+            // Initialise the default colors
+            this.ledDefaultColors = new Dictionary<LED, Color>();
+
             // Fill LED states map with all available LEDs and turn them OFF
             foreach (LED led in Enum.GetValues(typeof(LED)))
+            {
                 this.ledStates.Add(led, false);
+
+                // Also fill default colors
+                // TODO: this would be great if it could be done with attributes, but Color can not be an attribute parameter. Another way needs to be found :(
+                this.ledDefaultColors.Add(led, Color.White);
+            }
+
+            // Overwrite some colors
+            this.ledDefaultColors[LED.IND_H] = Color.Yellow;
+            this.ledDefaultColors[LED.IND_L] = Color.Yellow;
+            this.ledDefaultColors[LED.IND_R] = Color.Yellow;
+            this.ledDefaultColors[LED.PWR] = Color.Red;
+            this.ledDefaultColors[LED.EF] = Color.Red;
         }
 
         /// <summary>
@@ -119,11 +135,11 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Build the LED state string that is being sent to the button box
         /// </summary>
-        /// <returns>String of 0 or 1 for each available LED</returns>
-        public string GetLedStateString()
+        /// <returns>Dictionary of LED indices and color for each available LED</returns>
+        public Dictionary<byte, Color> GetLedStates()
         {
             lock (this.ledStates)
-                return String.Join("", Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).Select(led => this.ledStates[led] ? "1" : "0"));
+                return Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).ToDictionary(k => (byte)k, e => this.ledStates[e] ? this.ledDefaultColors[e] : Color.Black);
         }
 
         public void HandleTelemetryData(SCSTelemetry data)

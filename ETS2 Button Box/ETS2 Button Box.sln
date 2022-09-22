@@ -1,11 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ETS2 Button Box Arduino", "ETS2 Button Box Arduino\ETS2 Button Box Arduino.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETS2 Button Box Host", "ETS2 Button Box Host\ETS2 Button Box Host.csproj", "{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5237BF98-1B2B-4FD1-8403-05F8B59982D3}"
+	ProjectSection(SolutionItems) = preProject
+		ProtocolDefinition.txt = ProtocolDefinition.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETS2 Button Box Host Test", "ETS2 Button Box Host Test\ETS2 Button Box Host Test.csproj", "{059F6453-F002-457F-BF79-1938CB8D2BC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETS2 Button Box Library", "ETS2 Button Box Library\ETS2 Button Box Library.csproj", "{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETS2 Button Box Host", "ETS2 Button Box Host\ETS2 Button Box Host.csproj", "{414E9D6F-2282-4AA3-B024-1BEA045E89F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SCS SDK", "SCS SDK", "{88C7F99D-3718-448E-B0AD-A180CB89C94B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSSdkClient", "scs-sdk-plugin\scs-client\C#\SCSSdkClient\SCSSdkClient.csproj", "{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,17 +34,44 @@ Global
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|Any CPU.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Debug|x86.Build.0 = Debug|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Release|x86.ActiveCfg = Release|Any CPU
-		{158FC27D-6BF4-4B8E-8BAF-4306566D43E1}.Release|x86.Build.0 = Release|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Debug|x86.Build.0 = Debug|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{059F6453-F002-457F-BF79-1938CB8D2BC1}.Release|x86.Build.0 = Release|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Debug|x86.Build.0 = Debug|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Release|x86.ActiveCfg = Release|Any CPU
+		{72B9E472-AA8D-4A99-8BC8-F817FF1C56E2}.Release|x86.Build.0 = Release|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Debug|x86.Build.0 = Debug|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{414E9D6F-2282-4AA3-B024-1BEA045E89F9}.Release|x86.Build.0 = Release|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Debug|x86.Build.0 = Debug|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Release|x86.ActiveCfg = Release|Any CPU
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468} = {88C7F99D-3718-448E-B0AD-A180CB89C94B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09BE2F9B-F98F-467B-A448-C84E15C2BD63}

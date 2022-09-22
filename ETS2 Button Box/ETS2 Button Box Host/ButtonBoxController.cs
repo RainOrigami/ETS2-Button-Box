@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using ETS2_Button_Box_Library;
 using static ETS2_Button_Box_Host.ButtonController;
+using Timer = System.Threading.Timer;
 
 namespace ETS2_Button_Box_Host
 {
@@ -54,7 +50,7 @@ namespace ETS2_Button_Box_Host
             this.initialiseButtonLayout();
 
             // Initialise button state change events
-            this.SerialController.ButtonStateChangeReceived += this.ButtonController.ParseButtonString;
+            this.SerialController.ButtonChanged += this.ButtonController.ReceiveButtonChangedEvent;
             this.ButtonController.ButtonStateChanged += this.LedController.HandleChangedButtonState;
             this.ButtonController.ButtonStateChanged += ButtonController_ButtonStateChanged;
 
@@ -67,10 +63,11 @@ namespace ETS2_Button_Box_Host
         }
 
         /// <summary>
-        /// Handles telemetry change post LED handling to send the current LED state directly after LEDs were updated
+        /// Handles button state change post button handling to send the current LED state directly after buttons were changed
         /// </summary>
-        /// <param name="telemetry">Latest telemetry data set</param>
-        private void TelemetryController_TelemetryChanged(SCSSdkClient.Object.SCSTelemetry telemetry)
+        /// <param name="newButtonStates">New button state dictionary</param>
+        /// <param name="previousButtonStates">Previous button state dictionary</param>
+        private void ButtonController_ButtonStateChanged(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates)
         {
             if (!this.TelemetryController.IsConnected) return;
 
@@ -78,11 +75,10 @@ namespace ETS2_Button_Box_Host
         }
 
         /// <summary>
-        /// Handles button state change post button handling to send the current LED state directly after buttons were changed
+        /// Handles telemetry change post LED handling to send the current LED state directly after LEDs were updated
         /// </summary>
-        /// <param name="newButtonStates">New button state dictionary</param>
-        /// <param name="previousButtonStates">Previous button state dictionary</param>
-        private void ButtonController_ButtonStateChanged(Dictionary<Button, bool> newButtonStates, Dictionary<Button, bool> previousButtonStates)
+        /// <param name="telemetry">Latest telemetry data set</param>
+        private void TelemetryController_TelemetryChanged(SCSSdkClient.Object.SCSTelemetry telemetry)
         {
             if (!this.TelemetryController.IsConnected) return;
 
@@ -552,7 +548,7 @@ namespace ETS2_Button_Box_Host
         /// Do the LED interval logic
         /// </summary>
         /// <param name="state">Unused</param>
-        private void doLedInterval(object state = null)
+        private void doLedInterval(object? state = null)
         {
             // Handle LED interval on the controller
             this.LedController.HandleLedInterval();
@@ -576,7 +572,7 @@ namespace ETS2_Button_Box_Host
         private void sendLedUpdate()
         {
             // Send LED state string
-            this.SerialController.SendLedState(this.LedController.GetLedStateString());
+            this.SerialController.SendLedsUpdate(this.LedController.GetLedStates());
         }
 
         /// <summary>
@@ -587,11 +583,14 @@ namespace ETS2_Button_Box_Host
         /// <returns>True on successful connection, otherwise false</returns>
         public bool ConnectToBox(string comPortName)
         {
+            AutoResetEvent waitForConnection = new AutoResetEvent(false);
+            bool connected = false;
+            SerialController.Connected += () => { connected = true; waitForConnection.Set(); };
+            SerialController.VersionMismatch += upgradeRequired => { if (!upgradeRequired) return; connected = false; waitForConnection.Set(); };
             SerialController.Connect(comPortName);
-            if (SerialController.Handshake())
-                return true;
-            SerialController.Disconnect();
-            return false;
+            SerialController.Handshake();
+            waitForConnection.WaitOne(TimeSpan.FromMilliseconds(500));
+            return connected;
         }
     }
 }

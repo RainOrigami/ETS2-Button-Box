@@ -1,138 +1,123 @@
-#include <LibPrintf.h>
+﻿#include <FastLED.h>
 
-#pragma region IO Definitions
-// Pins for LED shift registers
-#define PIN_LED_SR_LATCH 17	// STCP
-#define PIN_LED_SR_CLOCK 6	// SHCP
-#define PIN_LED_SR_DATA 16	// LEDSD
+#define VERSION "2.7"	// Version number sent as part of the handshake event
 
-// Amount of LED shift registers
-#define LED_SR_COUNT 4
+#define BAUD_RATE 115200	// Use 115200 baud rate
 
-// Amount of LEDs
-#define LED_COUNT LED_SR_COUNT * 8
+#define PIN_LED 2			// LEDs connected to D2
+#define PIN_BTN_SR_LOAD 7	// PL connected to D7
+#define PIN_BTN_SR_LATCH 6	// CE connected to D6
+#define PIN_BTN_SR_CLOCK 8	// CP connected to D8
+#define PIN_BTN_SR_DATA 4	// BTNSD connected to D4
 
-// Note: These indices must be equal to the corresponding shift out position of the connected LED
-#define LED_BR 24
-#define LED_CC 12
-#define LED_DIF 0
-#define LED_EB 30
-#define LED_EF 1
-#define LED_ENB 28
-#define LED_ENG 15
-#define LED_FLS 22
-#define LED_GR 14
-#define LED_HRN 18
-#define LED_IND_H 6
-#define LED_IND_L 2
-#define LED_IND_R 4
-#define LED_PWR 13
-#define LED_TB 26
-#define LED_SCR 20
-#define LED_TOW 16
-#define LED_F0 3
-#define LED_F1 5
-#define LED_F2 7
-#define LED_F3 25
-#define LED_F4 27
-#define LED_F5 29
-#define LED_F6 31
-#define LED_F7 17
-#define LED_F8 19
-#define LED_F9 21
-#define LED_F10 23
-#define LED_BC 8
-#define LED_TB 9
-#define LED_UNUSED1 10
-#define LED_UNUSED2 11
+#define LED_COUNT 5	// Total amount of connected LEDs
 
-// Pins for LED shift registers
-#define PIN_BTN_SR_LOAD 8	// PL
-#define PIN_BTN_SR_LATCH 7	// CE
-#define PIN_BTN_SR_CLOCK 9	// CP
-#define PIN_BTN_SR_DATA 5	// BTNSD
+#define BTN_SHIFT_REGISTER_COUNT 5	// Amount of connected parallel-in-serial-out shift registers
+#define BTN_SHIFT_REGISTER_SIZE 8	// Size of connected shift registers (eg. 8 bit)
 
-// Amount of button shift registers
-#define BTN_SR_COUNT 5
+CRGB ledStates[LED_COUNT];
 
-// Amount of buttons
-#define BTN_COUNT BTN_SR_COUNT * 8
+bool buttonStates[BTN_SHIFT_REGISTER_COUNT * BTN_SHIFT_REGISTER_SIZE];	// Array of current button states
+int changedButtons[BTN_SHIFT_REGISTER_COUNT * BTN_SHIFT_REGISTER_SIZE];	// Array of changed buttons
+int buttonChangeCount = 0;	// Amount of changed buttons
 
-// Note: These indices must be equal to the corresponding shift in position of the connected button
-#define BTN_BC 21
-#define BTN_CCO 1
-#define BTN_CCR 3
-#define BTN_CCS1 7
-#define BTN_CCS2 5
-#define BTN_DIF 9
-#define BTN_EB 24
-#define BTN_ENB 22
-#define BTN_ENB1 20
-#define BTN_ENB2 26
-#define BTN_ENG 28
-#define BTN_FLS 14
-#define BTN_GR 11
-#define BTN_HRN 10
-#define BTN_INDH 23
-#define BTN_LI1 27
-#define BTN_LI2 25
-#define BTN_LI3 31
-#define BTN_LI4 29
-#define BTN_PWR 30
-#define BTN_TB 12
-#define BTN_RET1 18
-#define BTN_RET2 16
-#define BTN_SCR 8
-#define BTN_TOW 4
-#define BTN_VW1 15
-#define BTN_VW2 13
-#define BTN_VW3 19
-#define BTN_VW4 17
-#define BTN_WI1 32
-#define BTN_WI2 2
-#define BTN_WI3 0
-#define BTN_WI4 6
+#pragma region LED functions
+/// <summary>
+/// Initialise LED driver and set default brightness to something that doesn't burn your eyes out
+/// </summary>
+void initialiseLeds() {
+	FastLED.addLeds<WS2811Controller800Khz, PIN_LED, EOrder::RGB>(ledStates, LED_COUNT);
+	FastLED.setBrightness(50);
+}
 
-// Store LED states for writing
-uint8_t ledStates[LED_SR_COUNT];
+/// <summary>
+/// Magic number 1 has been received, handle the serial LED data and apply the changes
+/// </summary>
+void processLeds() {
+	// Read how many LED changes have been transmitted
+	size_t ledAmount = readSerialBlocking();
 
-// Store button states from reading
-uint8_t buttonStates[BTN_SR_COUNT];
+	for (size_t ledPosition = 0; ledPosition < ledAmount; ledPosition++)
+	{
+		// Read which LED to change and the RGB values to change to
+		int ledIndex = readSerialBlocking();
+		uint8_t red = readSerialBlocking();
+		uint8_t green = readSerialBlocking();
+		uint8_t blue = readSerialBlocking();
 
-// Store button states of last sent state
-uint8_t previousButtonStates[BTN_SR_COUNT];
+		// Set the LED to the corresponding color
+		setLedColor(ledIndex, CRGB(red, green, blue));
+	}
+
+	// Apply all changes
+	applyLeds();
+}
+
+/// <summary>
+/// Magic number 2 has been received, handle the serial brightness data and apply the changes
+/// </summary>
+void processBrightness() {
+	// Set the brightness from the serial data
+	FastLED.setBrightness(readSerialBlocking());
+
+	// Apply change
+	applyLeds();
+}
+
+/// <summary>
+/// Set the color of a specific LED. Does not apply the change
+/// </summary>
+/// <param name="led">LED index</param>
+/// <param name="color">Color</param>
+void setLedColor(uint8_t led, CRGB color) {
+	ledStates[led] = color;
+}
+
+/// <summary>
+/// Disable an LED by setting the color to 0 (black). Does not apply the change
+/// </summary>
+/// <param name="led">LED index</param>
+void disableLed(uint8_t led) {
+	ledStates[led] = 0;
+}
+
+/// <summary>
+/// Disable all LEDs. Does not apply the change
+/// </summary>
+void resetLeds() {
+	for (size_t i = 0; i < LED_COUNT; i++)
+		disableLed(i);
+}
+
+/// <summary>
+/// Apply LED colors to connected LED chain
+/// </summary>
+void applyLeds() {
+	FastLED.show();
+}
 #pragma endregion
 
-#pragma region IO Functions
-/// <summary>
-/// Enable an LED
-/// </summary>
-/// <param name="led">LED index on shift registers</param>
-void enableLED(uint8_t led) {
-	ledStates[led / 8] |= 1 << (led % 8);
+#pragma region Button functions
+void processButtons() {
+	// Read all buttons and process changes
+	readButtons();
+
+	// Do nothing if no change was detected
+	if (buttonChangeCount == 0) {
+		return;
+	}
+
+	// Send changed buttons over serial
+	sendButtonData();
 }
 
 /// <summary>
-/// Disable an LED
-/// </summary>
-/// <param name="led">LED index on shift registers</param>
-void disableLED(uint8_t led) {
-	ledStates[led / 8] &= ~(1 << (led % 8));
-}
-
-/// <summary>
-/// Disables all LEDs
-/// </summary>
-void resetLEDs() {
-	for (size_t i = 0; i < LED_COUNT; i++)
-		disableLED(i);
-}
-
-/// <summary>
-/// Reads all buttons into the buttonStates array
+/// Read all button states from shift registers
 /// </summary>
 void readButtons() {
-	// Load pins into shift registers
+	buttonChangeCount = 0;
+
+	// Load buttons into shift registers
 	digitalWrite(PIN_BTN_SR_LOAD, LOW);
 	delayMicroseconds(5);
 	digitalWrite(PIN_BTN_SR_LOAD, HIGH);
@@ -141,160 +126,119 @@ void readButtons() {
 	// Retrieve data from shift registers
 	digitalWrite(PIN_BTN_SR_CLOCK, HIGH);
 	digitalWrite(PIN_BTN_SR_LATCH, LOW);
-	for (size_t i = 0; i < BTN_SR_COUNT; i++)
-		buttonStates[i] = shiftIn(PIN_BTN_SR_DATA, PIN_BTN_SR_CLOCK, MSBFIRST);
+	for (size_t shiftRegisterIndex = 0; shiftRegisterIndex < BTN_SHIFT_REGISTER_COUNT; shiftRegisterIndex++)
+	{
+		for (size_t shiftRegisterByteIndex = 0; shiftRegisterByteIndex < 8 / BTN_SHIFT_REGISTER_SIZE; shiftRegisterByteIndex++)
+		{
+			uint8_t shiftRegisterButtonStates = shiftIn(PIN_BTN_SR_DATA, PIN_BTN_SR_CLOCK, LSBFIRST);
+			for (size_t shiftRegisterBitIndex = 0; shiftRegisterBitIndex < 8; shiftRegisterBitIndex++)
+			{
+				uint8_t buttonStatesIndex = (shiftRegisterIndex * BTN_SHIFT_REGISTER_SIZE) + (shiftRegisterByteIndex * 8) + shiftRegisterBitIndex;
+				bool shiftRegisterBit = (shiftRegisterButtonStates & (1 << shiftRegisterBitIndex)) > 0;
+
+				// Check if button has changed
+				if (buttonStates[buttonStatesIndex] != shiftRegisterBit) {
+					buttonStates[buttonStatesIndex] = shiftRegisterBit;
+					changedButtons[buttonChangeCount++] = buttonStatesIndex;
+				}
+			}
+		}
+	}
 	digitalWrite(PIN_BTN_SR_LATCH, HIGH);
 }
 
-/// <summary>
-/// Write changes to LED states to the corresponding pins
-/// This is mainly for buffering changes until the end of
-/// the loop to prevent flashing LEDs when resetting and
-/// enabling LEDs in one loop.
-/// </summary>
-void writeLEDs() {
-	digitalWrite(PIN_LED_SR_LATCH, LOW);
-	for (size_t i = 0; i < LED_SR_COUNT; i++)
-		shiftOut(PIN_LED_SR_DATA, PIN_LED_SR_CLOCK, MSBFIRST, ledStates[i]);
-	digitalWrite(PIN_LED_SR_LATCH, HIGH);
-}
-#pragma endregion
-
-#pragma region Serial
-unsigned long lastReceiveTime = 0;
-#define RECEIVETIMEOUT 2000
-
-void handleLedFromSerial() {
-	String data;
-
-	// Read serial data, if available, until the delimiter character is reached
-	if (Serial.available() > 0) 
-		data = Serial.readStringUntil('\n');
-
-	// Check if any data has been received
-	if (data.length() == 0)
-	{
-		// Check if no data has been received for longer than the timeout
-		if (millis() - lastReceiveTime > RECEIVETIMEOUT)
-		{
-			// Reset all LEDs
-			resetLEDs();
-
-			// Turn on PWR and IND_H LED to show button box is powered and ready for connection
-			enableLED(LED_PWR);
-			enableLED(LED_IND_H);
-		}
-		return;
-	}
-
-	// Set last receive time for timeout
-	lastReceiveTime = millis();
-
-	// data contains a data indicator and, depending on the data, a string of 0 and 1 in order of the LED enum as per host application
-
-	// Check data indicator
-	if (data == "HANDSHAKE") {
-		// Handshake gets an instant handshake reply
-		printf("HANDSHAKE\n");
-		// Indicate handshake
-		resetLEDs();
-		enableLED(LED_PWR);
-		enableLED(LED_IND_L);
-		enableLED(LED_IND_R);
-		return;
-	}
-
-	if (data.startsWith("LED[") && data.endsWith("]")) {
-		// LED event
-		
-		// Remove data indicator
-		data = data.substring(4, data.length() - 1);
-
-		// Check that received data is of equal length as the LED IO definitions
-		if (LED_COUNT != data.length())
-		{
-			// Either less or more LEDs have been sent over serial
-			// To indicate this error to the user we will disable all LEDs...
-			resetLEDs();
-
-			// ...and only enable PWR and EF to show a fault and IND_L to show an LED data mismatch failure
-			enableLED(LED_PWR);
-			enableLED(LED_EF);
-			enableLED(LED_IND_L);
-
-			// Stop further processing
-			return;
-		}
-
-		// Loop through all LEDs in the leds IO definition
-		for (size_t i = 0; i < LED_COUNT; i++)
-		{
-			// Enable or disable each corresponding LED
-			if (data.charAt(i) == '1')
-				enableLED(i);
-			else
-				disableLED(i);
-		}
-	}
-}
-
 void sendButtonData() {
-	bool change = false;
-	for (size_t i = 0; i < BTN_SR_COUNT; i++)
-		if (previousButtonStates[i] != buttonStates[i])
-		{
-			change = true;
-			break;
-		}
+	// Send magic number 3
+	Serial.write(3);
 
-	if (change) {
-		printf("BTN[");
-		for (size_t i = 0; i < BTN_SR_COUNT; i++)
-			for (size_t j = 0; j < 8; j++)
-				printf("%c", (buttonStates[i] & (1 << j)) > 0 ? '1' : '0');
-		printf("]\n");
+	// Send amount of changed buttons
+	Serial.write(buttonChangeCount);
 
-		for (size_t i = 0; i < BTN_SR_COUNT; i++)
-			previousButtonStates[i] = buttonStates[i];
+	// Send all changed button indices and states
+	for (size_t changedButtonIndex = 0; changedButtonIndex < buttonChangeCount; changedButtonIndex++)
+	{
+		Serial.write(changedButtons[changedButtonIndex]);
+		Serial.write((int)buttonStates[changedButtons[changedButtonIndex]]);
 	}
 }
+
 #pragma endregion
 
-#pragma region Arduino workflow
+
+#pragma region Serial handling and handshake
 /// <summary>
-/// Arduino power-on setup
+/// Serial event callback, called by Arduino when there is data available
+/// </summary>
+void serialEvent() {
+	// Handle magic number
+	switch (readSerialBlocking())
+	{
+	case 42:
+		processHandshake();
+		break;
+	case 1:
+		processLeds();
+		break;
+	case 2:
+		processBrightness();
+		break;
+	}
+}
+
+uint8_t readSerialBlocking() {
+	while (Serial.available() == 0) {}
+	return Serial.read();
+}
+
+void processHandshake() {
+	// Read handshake string
+	String data = Serial.readStringUntil('\n');
+
+	// Check handshake string
+	if (data != "HANDSHAKE") {
+		// Data has been received that was not a handshake event, this really shouldn't happen
+		return;
+	}
+
+	// Handshake gets an immediate handshake reply with version
+	Serial.write(42);
+	Serial.write("HANDSHAKE: ");
+	Serial.write(VERSION);
+	Serial.write("\n");
+
+	resetLeds();
+	applyLeds();
+}
+
+#pragma endregion
+
+#pragma region Arduino setup and loop
+
+/// <summary>
+/// Initial call when arduino is booted
 /// </summary>
 void setup() {
-	// Setup serial connection for interacting with the host application
-	Serial.begin(9600);
+	// Start serial transmission
+	Serial.begin(BAUD_RATE);
 
-	// Initialise shift registers
-	// LED
-	pinMode(PIN_LED_SR_LATCH, OUTPUT);
-	pinMode(PIN_LED_SR_DATA, OUTPUT);
-	pinMode(PIN_LED_SR_CLOCK, OUTPUT);
-	// Buttons
+	// Setup pin modes for shift registers
 	pinMode(PIN_BTN_SR_LOAD, OUTPUT);
 	pinMode(PIN_BTN_SR_LATCH, OUTPUT);
 	pinMode(PIN_BTN_SR_CLOCK, OUTPUT);
 	pinMode(PIN_BTN_SR_DATA, INPUT);
 
-	// Clear all shift registers and turn all LEDs off
-	resetLEDs();
-
-	//// Initially PWR and IND_H LED is enabled to show button box is powered and ready for connection
-	enableLED(LED_PWR);
-	enableLED(LED_IND_H);
+	// Initialise and reset LEDs
+	initialiseLeds();
+	resetLeds();
+	applyLeds();
 }
+
 
 /// <summary>
-/// Arduino main loop
+/// Main program loop
 /// </summary>
 void loop() {
-	readButtons();
-	sendButtonData();
-
-	handleLedFromSerial();
-	writeLEDs();
+	processButtons();
 }
+
 #pragma endregion

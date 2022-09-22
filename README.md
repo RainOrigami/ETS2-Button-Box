@@ -55,11 +55,9 @@ Contributions by [Arduino](https://www.arduino.cc/)
 
 # Hardware
 
-The project is based on an ATmega328P-AU with the Arduino Bootloader burned and an Arduino Sketch uploaded to it which communicates with a host application through the CH340G UART USB Serial Interface.
+The project is based on an Arduino Nano ATmega168.
 
-An ISP header is provided for burning custom firmware to the ATmega328P-AU chip or to interface addons.
-
-Custom Arduino sketches can easly be uploaded through the CH340G USB Serial Interface.
+Custom Arduino sketches can easly be uploaded through the USB Serial Interface.
 
 # Software
 
@@ -86,17 +84,31 @@ ETS2 uses the Telemetry SDK to provide information about the game and the truck 
 The box will be available as a set for self-assemly on eBay for the price of the parts, shipping and a small 5€ fee for supporting the creator. Some minor soldering and box assembly will be required.
 
 Current price of components:
-- PCB: 8€
+- PCB: ?€
 - Buttons/Switches/Selectors/Rotary Encoders: ~25€
-- LEDs: <1€
+- LEDs: ?€
 - Acrylic Box (Lasercut): 10€
 - Rubber feet: <1€
 - USB Cable: 3€
 - Internal cables: <1€
 - (Optional) Carbon Vinyl Frontplate: 4€
 
-Estimated total of set: 60€ excl. shipping
+Estimated total of set: ?€ excl. shipping
 
 Please note that, as the box is still in development, the price may be subject to change before the release.
 
 Otherwise all components of the ETS2 Button Box are open source, you are free to take the PCB layout, schematics, Arduino sketch and host application and build or modify the box yourself by any means and use your own project box, buttons, switches, LEDs, etc.
+
+# Major changes in v2.7
+
+Since the PCB supplier in Djina is having trouble getting all the required components at a reasonable price (>50€ for an ATmega...) I have completely reworked the PCB to use an Arduino Nano instead.
+
+I have also decided to use individually adressable WS2811-based RGB LEDs. They are only a little bit more expensive than single color LEDs and it saves a lot of hassle connecting every single LED through a resistor to the PCB. Instead only three connections are required for all the LEDs and they can easily be expanded simply by soldering to the last LED.
+
+The arduino code has been completely reworked to be more flexible. It is now not necessary anymore for the arduino to know each button and LED by name. This is now only done in the host software. The serial transmission protocol has also been adjusted to use magic numbers, packet length indicators and binary data instead of transmitting everything as a string.
+
+Code interaction with the host application using the new arduino base has not been fully tested. A test project has been used to validate functionality of connection, LED and button handling on arduino.
+
+For v2.8 I will try and integrate most LEDs, buttons, switches, selectors and rotary encoders directly on the PCB for even easier assembly. Only some chunky ones like the key switches should require external cabeling.
+
+It is highly possible that v2.8 as a release candidate will be available by the end of the year to be ordered and assembled. It should be a little cheaper even with the individually adressable RGBs as you will have to provide your own arduino nano :)

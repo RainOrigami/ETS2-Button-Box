@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ETS2_Button_Box_Host
+﻿namespace ETS2_Button_Box_Host
 {
     /// <summary>
     /// Available LEDs on the button box
@@ -130,12 +124,6 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Trailer brake status
         /// </summary>
-        TB = 9,
-
-        /// <summary>
-        /// Unused pins of shift registers
-        /// </summary>
-        UNUSED1 = 10,
-        UNUSED2 = 11
+        TB = 9
     }
 }

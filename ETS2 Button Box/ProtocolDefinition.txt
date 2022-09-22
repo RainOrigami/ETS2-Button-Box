@@ -1,0 +1,47 @@
+Commands:
+Magic Number	Data Structure				Direciton				Command
+42				CR terminated string		Host to Device to Host	Handshake
+1				Length, LED index, RGB		Host to Device			LED states
+2				Single integer 0-255		Host to Device			Global brightness
+3				Length, BTN index, State	Device to Host			Button states
+9				CR terminated string		Device to Host			Debug message
+
+Handshake:
+
+Initial Handshake, can be sent any time between commands:
+
+1.	Host sends magic number 42
+2.	Host sends string "HANDSHAKE\n"
+3.	Device sends magic number 42
+4.	Device sends string "HANDSHAKE: ?.?\n"
+	?.? will be the version of the device code, for example "2.7".
+	Version will be used for compatibility ensurance and upgrade requests
+
+LED states:
+
+1.	Host sends magic number 1
+2.	Host sends integer 'length' of LEDs
+	Full data length = 'length' * 4 (index, red, green, blue)
+3.	Host sends, for each LED, for a total of 'length':
+	3.1	Integer LED index
+	3.2	Integer Red Value (0-255)
+	3.3	Integer Green Value (0-255)
+	3.4	Integer Blue Value (0-255)
+
+Global brightness:
+
+1.	Host sends send magic number 2
+2.	Host sends integer brightness value (0-255)
+
+Button states:
+
+1.	Device sends magic number 3
+2.	Device sends integer 'length' of buttons
+	Full data length = 'length' * 2
+3.	Device sends, for each button, for a total of 'lenght':
+	3.1	Integer button index
+	3.2	Integer value of button state (0 = Off, 1 = On)
+
+Debug message:
+1.	Device sends magic number 9
+2.	Device sends CR terminated string (eg. "Test\n")

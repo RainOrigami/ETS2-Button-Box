@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace ETS2_Button_Box_Host
+﻿namespace ETS2_Button_Box_Host
 {
     public class ButtonController
     {
@@ -45,12 +38,12 @@ namespace ETS2_Button_Box_Host
             public Action<Dictionary<Button, bool>, Dictionary<Button, bool>, ButtonAction> Action;
         }
 
-        public void ParseButtonString(string buttons)
+        public void ReceiveButtonChangedEvent(byte changedButton, bool state)
         {
             // Validate length of button line
-            if (buttons.Length != Enum.GetValues(typeof(Button)).Length)
+            if (!Enum.IsDefined(typeof(Button), changedButton))
             {
-                Console.WriteLine($"Received invalid button state (is {buttons.Length} should {Enum.GetValues(typeof(Button)).Length}): {buttons}");
+                Console.WriteLine($"Received invalid button ({changedButton}).");
                 return;
             }
 
@@ -60,9 +53,8 @@ namespace ETS2_Button_Box_Host
                 previousButtonStates.Add(button, this.buttonStates[button]);
 
             // Read button states into button states map
-            for (int i = 0; i < buttons.Length; i++)
-                if (this.buttonStates.ContainsKey((Button)i))
-                    this.buttonStates[(Button)i] = buttons[i] == '1';
+            if (this.buttonStates.ContainsKey((Button)changedButton))
+                this.buttonStates[(Button)changedButton] = state;
 
             // Invoke event
             this.ButtonStateChanged?.Invoke(this.buttonStates, previousButtonStates);

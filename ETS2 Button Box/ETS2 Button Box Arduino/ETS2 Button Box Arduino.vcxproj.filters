@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ETS2 Button Box Arduino.ino" />
     <None Include="src\arduino folders read me.txt">
       <Filter>Misc Files</Filter>
     </None>
+    <None Include="ETS2 Button Box Arduino.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ETS2 Button Box Arduino.vsarduino.h">

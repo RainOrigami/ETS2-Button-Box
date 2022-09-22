@@ -1,4 +1,4 @@
-namespace ETS2_Button_Box_Host
+namespace ETS2_Button_Box_Host_Test
 {
     internal static class Program
     {
@@ -11,7 +11,7 @@ namespace ETS2_Button_Box_Host
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new ETS2ButtonBoxHost());
+            Application.Run(new HostTest());
         }
     }
 }
