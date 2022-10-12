@@ -4,7 +4,7 @@
   "name": "EasyEDA Project",
   "content": "",
   "created_at": "2021-04-28 18:24:42",
-  "updated_at": "2022-09-28 16:57:19",
+  "updated_at": "2022-10-12 16:23:12",
   "stick": "",
   "documents": [
     {
@@ -20,7 +20,8 @@
         "bfcd5a739f3748b4aff1201165895e98": 1,
         "c3e7dd387b46474fb1eee46142010131": 31,
         "5d56951fd43d4b5083b0f3cd9bfd5587": 71,
-        "427f119159784536b490f25e1734a2b9": 5
+        "427f119159784536b490f25e1734a2b9": 5,
+        "6d8c86ad02db4852bcb7d31de43a8975": 2
       },
       "BOM": [
         [
@@ -31,14 +32,25 @@
           "CustomPara"
         ],
         [
+          "JST-PH6",
+          2,
+          "JST-PH6",
+          "BNT_OUT,BTN_IN",
+          {
+            "BOM_Manufacturer Part": "",
+            "puuid": "0ba8e32dd52345318cdb984a364ea297",
+            "uuid": "6d8c86ad02db4852bcb7d31de43a8975"
+          }
+        ],
+        [
           "WS2811",
           31,
-          "RGB-LED-5MM(WS2811)",
+          "RGB-LED-5MM(WS2811)(JLCPCB CONFORM)",
           "LED1,LED2,LED3,LED4,LED5,LED6,LED7,LED8,LED9,LED10,LED11,LED12,LED13,LED14,LED15,LED16,LED17,LED18,LED19,LED20,LED21,LED22,LED23,LED24,LED25,LED26,LED27,LED28,LED29,LED30,LED31",
           {
             "BOM_Mounted": "Yes",
             "BOM_Manufacturer Part": "",
-            "puuid": "ffbb113de10046cd9f14535fd2c4ba73",
+            "puuid": "517a9aeb69414f6e8844655143037883",
             "uuid": "c3e7dd387b46474fb1eee46142010131"
           }
         ],
@@ -95,11 +107,11 @@
           }
         ]
       ],
-      "updateTime": 1664377039,
+      "updateTime": 1665584592,
       "createTime": 1619627103,
       "histories": [],
       "created_at": "2021-04-28 18:25:03",
-      "updated_at": "2022-09-28 16:57:19"
+      "updated_at": "2022-10-12 16:23:12"
     },
     {
       "uuid": "895efa7dce07f1d05394f0d7a682a7b4",
@@ -128,26 +140,27 @@
     {
       "uuid": "442540f93cb53540eb57c2f371e04e49",
       "puuid": "320d48e0c53129fa8025980d82841b11",
-      "title": "PCB_ETS2ButtonBox",
-      "filename": "PCB_ETS2ButtonBox.json",
+      "title": "PCB_ETS2ButtonBox_4_layer",
+      "filename": "PCB_ETS2ButtonBox_4_layer.json",
       "description": "",
       "docType": "3",
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
+        "0ba8e32dd52345318cdb984a364ea297": 2,
         "3eb1249f3ebb4284ae221b0379016582": 71,
         "8863ff03d2cf4595840759da75614eaa": 1,
         "3b1eeee7179a4c50b218b80eedee10d6": 1,
-        "ffbb113de10046cd9f14535fd2c4ba73": 31,
+        "517a9aeb69414f6e8844655143037883": 31,
         "1f423f14388b4b17afc87646625a53f6": 5,
         "63cd1ae5b3f8412aaa1d5663f646bdb9": 1
       },
       "BOM": [],
-      "updateTime": 1664377002,
+      "updateTime": 1665577743,
       "createTime": 1664021288,
       "histories": [],
       "created_at": "2022-09-24 14:08:08",
-      "updated_at": "2022-09-28 16:56:42"
+      "updated_at": "2022-10-12 14:29:03"
     },
     {
       "uuid": "bae2532fd7db109dfb2bd8bcb40da61e",
@@ -231,11 +244,259 @@
       "histories": [],
       "created_at": "2022-09-27 23:42:48",
       "updated_at": "2022-09-27 23:42:48"
+    },
+    {
+      "uuid": "59bec970d271ce3fee6c1afc9a083085",
+      "puuid": "320d48e0c53129fa8025980d82841b11",
+      "title": "PCB_EasyEDA Project",
+      "filename": "PCB_EasyEDA Project.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "3b1eeee7179a4c50b218b80eedee10d6": 1,
+        "3eb1249f3ebb4284ae221b0379016582": 71,
+        "8863ff03d2cf4595840759da75614eaa": 1,
+        "ffbb113de10046cd9f14535fd2c4ba73": 31,
+        "1f423f14388b4b17afc87646625a53f6": 5,
+        "c499fffa9a694652a7aefc1d5a3c4e4b": 2,
+        "63cd1ae5b3f8412aaa1d5663f646bdb9": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "HS-JST-4pin",
+          2,
+          "CONN-TH_4P-P2.54_HCTL_HC-2510-4A",
+          "BNT_OUT,BTN_IN",
+          {
+            "BOM_Supplier": "",
+            "BOM_Supplier Part": "JST-4-pin-male",
+            "BOM_Manufacturer": "JST",
+            "BOM_Manufacturer Part": "HC-2510-4A",
+            "BOM_JLCPCB Part Class": "Extended Part",
+            "puuid": "c499fffa9a694652a7aefc1d5a3c4e4b",
+            "uuid": "f2d7e060434c4b5e8bf73c5a79a4ee0c"
+          }
+        ],
+        [
+          "WS2811",
+          31,
+          "RGB-LED-5MM(WS2811)",
+          "LED1,LED2,LED3,LED4,LED5,LED6,LED7,LED8,LED9,LED10,LED11,LED12,LED13,LED14,LED15,LED16,LED17,LED18,LED19,LED20,LED21,LED22,LED23,LED24,LED25,LED26,LED27,LED28,LED29,LED30,LED31",
+          {
+            "BOM_Mounted": "Yes",
+            "BOM_Manufacturer Part": "",
+            "puuid": "ffbb113de10046cd9f14535fd2c4ba73",
+            "uuid": "c3e7dd387b46474fb1eee46142010131"
+          }
+        ],
+        [
+          "ARDUINO-NANO-3.0 COPY",
+          1,
+          "ARDUINO-NANO-3.0",
+          "M1",
+          {
+            "BOM_Manufacturer Part": "",
+            "puuid": "3b1eeee7179a4c50b218b80eedee10d6",
+            "uuid": "bfcd5a739f3748b4aff1201165895e98"
+          }
+        ],
+        [
+          "75",
+          31,
+          "R_AXIAL-0.3",
+          "R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19,R20,R21,R22,R23,R24,R25,R26,R27,R28,R29,R30,R31",
+          {
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "BOM_Manufacturer Part": "",
+            "puuid": "3eb1249f3ebb4284ae221b0379016582",
+            "uuid": "5d56951fd43d4b5083b0f3cd9bfd5587"
+          }
+        ],
+        [
+          "10k",
+          40,
+          "R_AXIAL-0.3",
+          "R32,R33,R34,R35,R36,R37,R38,R39,R40,R41,R42,R43,R44,R45,R46,R47,R48,R49,R50,R51,R52,R53,R54,R55,R56,R57,R58,R59,R60,R61,R62,R63,R64,R65,R66,R67,R68,R69,R70,R71",
+          {
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "BOM_Manufacturer Part": "",
+            "puuid": "3eb1249f3ebb4284ae221b0379016582",
+            "uuid": "5d56951fd43d4b5083b0f3cd9bfd5587"
+          }
+        ],
+        [
+          "SN74HC165N",
+          5,
+          "DIP-16_L19.8-W6.5-P2.54-LS7.6-BL",
+          "U1,U2,U3,U4,U5",
+          {
+            "BOM_Supplier": "",
+            "BOM_Manufacturer": "TI",
+            "BOM_Manufacturer Part": "SN74HC165N",
+            "BOM_Supplier Part": "",
+            "BOM_JLCPCB Part Class": "",
+            "puuid": "1f423f14388b4b17afc87646625a53f6",
+            "uuid": "427f119159784536b490f25e1734a2b9"
+          }
+        ]
+      ],
+      "updateTime": 1664487475,
+      "createTime": 1664464662,
+      "histories": [],
+      "created_at": "2022-09-29 17:17:42",
+      "updated_at": "2022-09-29 23:37:55"
+    },
+    {
+      "uuid": "3652bde3b2734916cf57886e27c0c04b",
+      "title": "PCB_ETS2ButtonBox - after scoring",
+      "filename": "PCB_ETS2ButtonBox - after scoring.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "updateTime": 1664448699,
+      "createTime": 1664448699,
+      "histories": [],
+      "created_at": "2022-09-29 12:51:39",
+      "updated_at": "2022-09-29 12:51:39"
+    },
+    {
+      "uuid": "4cb2ebce54f02b217047744474689aaa",
+      "title": "PCB_ETS2ButtonBox - before panelising",
+      "filename": "PCB_ETS2ButtonBox - before panelising.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "updateTime": 1664447046,
+      "createTime": 1664447046,
+      "histories": [],
+      "created_at": "2022-09-29 12:24:06",
+      "updated_at": "2022-09-29 12:24:06"
+    },
+    {
+      "uuid": "8b987bb3b8c9f26f0e5220ecc56872a5",
+      "puuid": "320d48e0c53129fa8025980d82841b11",
+      "title": "PCB_ETS2ButtonBox",
+      "filename": "PCB_ETS2ButtonBox.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "0ba8e32dd52345318cdb984a364ea297": 2,
+        "63cd1ae5b3f8412aaa1d5663f646bdb9": 1,
+        "1f423f14388b4b17afc87646625a53f6": 5,
+        "517a9aeb69414f6e8844655143037883": 31,
+        "8863ff03d2cf4595840759da75614eaa": 1,
+        "3b1eeee7179a4c50b218b80eedee10d6": 1,
+        "3eb1249f3ebb4284ae221b0379016582": 71
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "WS2811",
+          31,
+          "RGB-LED-5MM(WS2811)(JLCPCB CONFORM)",
+          "LED1,LED2,LED3,LED4,LED5,LED6,LED7,LED8,LED9,LED10,LED11,LED12,LED13,LED14,LED15,LED16,LED17,LED18,LED19,LED20,LED21,LED22,LED23,LED24,LED25,LED26,LED27,LED28,LED29,LED30,LED31",
+          {
+            "BOM_Mounted": "Yes",
+            "BOM_Manufacturer Part": "",
+            "puuid": "517a9aeb69414f6e8844655143037883",
+            "uuid": "c3e7dd387b46474fb1eee46142010131"
+          }
+        ],
+        [
+          "ARDUINO-NANO-3.0 COPY",
+          1,
+          "ARDUINO-NANO-3.0",
+          "M1",
+          {
+            "BOM_Manufacturer Part": "",
+            "puuid": "3b1eeee7179a4c50b218b80eedee10d6",
+            "uuid": "bfcd5a739f3748b4aff1201165895e98"
+          }
+        ],
+        [
+          "JST-PH6",
+          2,
+          "JST-PH6",
+          "P1,P2",
+          {
+            "BOM_Manufacturer Part": "",
+            "puuid": "0ba8e32dd52345318cdb984a364ea297",
+            "uuid": "6d8c86ad02db4852bcb7d31de43a8975"
+          }
+        ],
+        [
+          "75",
+          31,
+          "R_AXIAL-0.3",
+          "R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19,R20,R21,R22,R23,R24,R25,R26,R27,R28,R29,R30,R31",
+          {
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "BOM_Manufacturer Part": "",
+            "puuid": "3eb1249f3ebb4284ae221b0379016582",
+            "uuid": "5d56951fd43d4b5083b0f3cd9bfd5587"
+          }
+        ],
+        [
+          "10k",
+          40,
+          "R_AXIAL-0.3",
+          "R32,R33,R34,R35,R36,R37,R38,R39,R40,R41,R42,R43,R44,R45,R46,R47,R48,R49,R50,R51,R52,R53,R54,R55,R56,R57,R58,R59,R60,R61,R62,R63,R64,R65,R66,R67,R68,R69,R70,R71",
+          {
+            "BOM_Supplier Part": "",
+            "BOM_Supplier": "",
+            "BOM_Manufacturer Part": "",
+            "puuid": "3eb1249f3ebb4284ae221b0379016582",
+            "uuid": "5d56951fd43d4b5083b0f3cd9bfd5587"
+          }
+        ],
+        [
+          "SN74HC165N",
+          5,
+          "DIP-16_L19.8-W6.5-P2.54-LS7.6-BL",
+          "U1,U2,U3,U4,U5",
+          {
+            "BOM_Supplier": "",
+            "BOM_Manufacturer": "TI",
+            "BOM_Manufacturer Part": "SN74HC165N",
+            "BOM_Supplier Part": "",
+            "BOM_JLCPCB Part Class": "",
+            "puuid": "1f423f14388b4b17afc87646625a53f6",
+            "uuid": "427f119159784536b490f25e1734a2b9"
+          }
+        ]
+      ],
+      "updateTime": 1665584548,
+      "createTime": 1665582120,
+      "histories": [],
+      "created_at": "2022-10-12 15:42:00",
+      "updated_at": "2022-10-12 16:22:28"
     }
   ],
   "sort": [],
   "title": "EasyEDA Project",
   "foldername": "EasyEDA Project",
   "schfilename": "ETS2ButtonBox.json",
-  "schfilemtime": 1664377039447
+  "schfilemtime": 1665584592306
 }
