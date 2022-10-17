@@ -4,7 +4,7 @@
   "name": "EasyEDA Project",
   "content": "",
   "created_at": "2021-04-28 18:24:42",
-  "updated_at": "2022-10-12 16:23:12",
+  "updated_at": "2022-10-17 14:00:29",
   "stick": "",
   "documents": [
     {
@@ -487,11 +487,11 @@
           }
         ]
       ],
-      "updateTime": 1665584548,
+      "updateTime": 1666008029,
       "createTime": 1665582120,
       "histories": [],
       "created_at": "2022-10-12 15:42:00",
-      "updated_at": "2022-10-12 16:22:28"
+      "updated_at": "2022-10-17 14:00:29"
     }
   ],
   "sort": [],
