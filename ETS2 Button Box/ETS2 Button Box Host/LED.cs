@@ -30,7 +30,7 @@
         /// </summary>
         ENB = 28,
         /// <summary>
-        /// Trailer brake status
+        /// Retarder status
         /// </summary>
         RET = 26,
         /// <summary>
@@ -124,6 +124,10 @@
         /// <summary>
         /// Trailer brake status
         /// </summary>
-        TB = 9
+        TB = 9,
+        /// <summary>
+        /// Brights (high beam) status
+        /// </summary>
+        Brights = 32
     }
 }

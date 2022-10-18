@@ -4,13 +4,13 @@
 
 #define BAUD_RATE 19200	// Use 19200 baud rate
 
-#define PIN_LED 2			// LEDs connected to D2
-#define PIN_BTN_SR_LOAD 7	// PL connected to D7
-#define PIN_BTN_SR_LATCH 6	// CE connected to D6
-#define PIN_BTN_SR_CLOCK 8	// CP connected to D8
-#define PIN_BTN_SR_DATA 4	// BTNSD connected to D4
+#define PIN_LED 10			// LEDs connected to D2
+#define PIN_BTN_SR_LOAD 6	// PL connected to D7
+#define PIN_BTN_SR_LATCH 8	// CE connected to D6
+#define PIN_BTN_SR_CLOCK 7	// CP connected to D8
+#define PIN_BTN_SR_DATA 9	// BTNSD connected to D4
 
-#define LED_COUNT 5	// Total amount of connected LEDs
+#define LED_COUNT 31	// Total amount of connected LEDs
 
 #define BTN_SHIFT_REGISTER_COUNT 5	// Amount of connected parallel-in-serial-out shift registers
 #define BTN_SHIFT_REGISTER_SIZE 8	// Size of connected shift registers (eg. 8 bit)
