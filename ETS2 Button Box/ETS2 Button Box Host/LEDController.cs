@@ -5,6 +5,30 @@ namespace ETS2_Button_Box_Host
     public class LEDController
     {
         /// <summary>
+        /// Stores the current and previous LED state for tracking which LEDs have actually changed
+        /// </summary>
+        private class LedState
+        {
+            /// <summary>
+            /// Previous LED state
+            /// </summary>
+            internal bool Previous { get; private set; } = false;
+
+            /// <summary>
+            /// Current LED state
+            /// </summary>
+            internal bool Current { get; set; } = false;
+
+            /// <summary>
+            /// Reset previous LED state to current LED state
+            /// </summary>
+            internal void Reset()
+            {
+                this.Previous = this.Current;
+            }
+        }
+
+        /// <summary>
         /// Whether or not there is a fuel warning (fuel < fuelWarn%)
         /// </summary>
         private bool isFuelWarning;
@@ -29,7 +53,7 @@ namespace ETS2_Button_Box_Host
         /// <summary>
         /// Map of all current LED states
         /// </summary>
-        private Dictionary<LED, bool> ledStates;
+        private Dictionary<LED, LedState> ledStates;
 
         /// <summary>
         /// Map of all LED default colors
@@ -42,7 +66,7 @@ namespace ETS2_Button_Box_Host
         public LEDController()
         {
             // Initialise the LED states map
-            this.ledStates = new Dictionary<LED, bool>();
+            this.ledStates = new Dictionary<LED, LedState>();
 
             // Initialise the default colors
             this.ledDefaultColors = new Dictionary<LED, Color>();
@@ -50,7 +74,7 @@ namespace ETS2_Button_Box_Host
             // Fill LED states map with all available LEDs and turn them OFF
             foreach (LED led in Enum.GetValues(typeof(LED)))
             {
-                this.ledStates.Add(led, false);
+                this.ledStates.Add(led, new LedState());
 
                 // Also fill default colors
                 // TODO: this would be great if it could be done with attributes, but Color can not be an attribute parameter. Another way needs to be found :(
@@ -83,7 +107,7 @@ namespace ETS2_Button_Box_Host
         public void DisableLed(LED led)
         {
             lock (this.ledStates)
-                this.ledStates[led] = false;
+                this.ledStates[led].Current = false;
         }
 
         /// <summary>
@@ -94,7 +118,7 @@ namespace ETS2_Button_Box_Host
         public void EnableLed(LED led)
         {
             lock (this.ledStates)
-                this.ledStates[led] = true;
+                this.ledStates[led].Current = true;
         }
 
         /// <summary>
@@ -105,7 +129,7 @@ namespace ETS2_Button_Box_Host
         public void ToggleLed(LED led)
         {
             lock (this.ledStates)
-                this.ledStates[led] = !this.ledStates[led];
+                this.ledStates[led].Current = !this.ledStates[led].Current;
         }
 
         /// <summary>
@@ -133,13 +157,32 @@ namespace ETS2_Button_Box_Host
         }
 
         /// <summary>
-        /// Build the LED state string that is being sent to the button box
+        /// Build the LED state dictionary that is being sent to the button box
         /// </summary>
         /// <returns>Dictionary of LED indices and color for each available LED</returns>
         public Dictionary<byte, Color> GetLedStates()
         {
             lock (this.ledStates)
-                return Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).ToDictionary(k => (byte)k, e => this.ledStates[e] ? this.ledDefaultColors[e] : Color.Black);
+                return Enum.GetValues(typeof(LED)).OfType<LED>().OrderBy(led => (int)led).ToDictionary(k => (byte)k, e => this.ledStates[e].Current ? this.ledDefaultColors[e] : Color.Black);
+        }
+
+        /// <summary>
+        /// Build the LED state dictionary of only changed LEDs that is being sent to the button box
+        /// </summary>
+        /// <returns>Dictionary of LED indices and color for each changed LED</returns>
+        public Dictionary<byte, Color> GetChangedLedStates()
+        {
+            lock (this.ledStates)
+                return Enum.GetValues(typeof(LED)).OfType<LED>().Where(i => this.ledStates[i].Current != this.ledStates[i].Previous).OrderBy(i => (int)i).ToDictionary(k => (byte)k, e => this.ledStates[e].Current ? this.ledDefaultColors[e] : Color.Black);
+        }
+
+        /// <summary>
+        /// Reset all LEDs to be unchanged, usually after processing GetChangedLedState
+        /// </summary>
+        public void SetLedsUnchanged()
+        {
+            lock (this.ledStates)
+                Parallel.ForEach(this.ledStates, kvp => kvp.Value.Reset());
         }
 
         public void HandleTelemetryData(SCSTelemetry data)
@@ -234,5 +277,6 @@ namespace ETS2_Button_Box_Host
             if (this.isFuelWarning)
                 this.ToggleLed(LED.F0);
         }
+
     }
 }

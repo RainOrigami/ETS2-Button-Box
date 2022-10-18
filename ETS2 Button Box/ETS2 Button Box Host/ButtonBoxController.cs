@@ -572,7 +572,8 @@ namespace ETS2_Button_Box_Host
         private void sendLedUpdate()
         {
             // Send LED state string
-            this.SerialController.SendLedsUpdate(this.LedController.GetLedStates());
+            this.SerialController.SendLedsUpdate(this.LedController.GetChangedLedStates());
+            this.LedController.SetLedsUnchanged();
         }
 
         /// <summary>
