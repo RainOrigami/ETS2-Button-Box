@@ -35,15 +35,22 @@ void initialiseLeds() {
 /// </summary>
 void processLeds() {
 	// Read how many LED changes have been transmitted
-	size_t ledAmount = readSerialBlocking();
+	uint8_t ledAmount = readSerialBlocking();
+
+	byte ledBuffer[LED_COUNT * 4];
+	uint8_t totalReadAmount = 0;
+
+	while (totalReadAmount < ledAmount * 4) {
+		totalReadAmount += Serial.readBytes(&ledBuffer[totalReadAmount], ledAmount * 4 - totalReadAmount);
+	}
 
 	for (size_t ledPosition = 0; ledPosition < ledAmount; ledPosition++)
 	{
 		// Read which LED to change and the RGB values to change to
-		int ledIndex = readSerialBlocking();
-		uint8_t red = readSerialBlocking();
-		uint8_t green = readSerialBlocking();
-		uint8_t blue = readSerialBlocking();
+		uint8_t ledIndex = ledBuffer[ledPosition * 4 + 0];
+		uint8_t red = ledBuffer[ledPosition * 4 + 1];
+		uint8_t green = ledBuffer[ledPosition * 4 + 2];
+		uint8_t blue = ledBuffer[ledPosition * 4 + 3];
 
 		// Set the LED to the corresponding color
 		setLedColor(ledIndex, CRGB(red, green, blue));
