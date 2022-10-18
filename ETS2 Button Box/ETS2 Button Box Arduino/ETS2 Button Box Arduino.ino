@@ -2,7 +2,7 @@
 
 #define VERSION "2.10"	// Version number sent as part of the handshake event
 
-#define BAUD_RATE 115200	// Use 115200 baud rate
+#define BAUD_RATE 19200	// Use 19200 baud rate
 
 #define PIN_LED 2			// LEDs connected to D2
 #define PIN_BTN_SR_LOAD 7	// PL connected to D7

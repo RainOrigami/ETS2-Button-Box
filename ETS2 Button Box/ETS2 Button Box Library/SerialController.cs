@@ -60,7 +60,7 @@ namespace ETS2_Button_Box_Library
             // Setup serial port
             buttonBoxPort = new SerialPort
             {
-                BaudRate = 115200,
+                BaudRate = 19200,
                 Parity = Parity.None,
                 DataBits = 8,
                 StopBits = StopBits.One,
