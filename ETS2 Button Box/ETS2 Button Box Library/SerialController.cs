@@ -222,6 +222,7 @@ namespace ETS2_Button_Box_Library
                 buffer[2 + (4 * ledUpdateIndex) + 1] = led.Value.R;
                 buffer[2 + (4 * ledUpdateIndex) + 2] = led.Value.G;
                 buffer[2 + (4 * ledUpdateIndex) + 3] = led.Value.B;
+                ledUpdateIndex++;
             }
 
             // Send LED updates to button box arduino
