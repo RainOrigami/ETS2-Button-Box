@@ -84,16 +84,19 @@ ETS2 uses the Telemetry SDK to provide information about the game and the truck 
 The box will be available as a set for self-assemly on eBay for the price of the parts, shipping and a small 5€ fee for supporting the creator. Some minor soldering and box assembly will be required.
 
 Current price of components:
-- PCB: ?€
+- PCBs: ~4€
+- Arduino: 3€
 - Buttons/Switches/Selectors/Rotary Encoders: ~25€
-- LEDs: ?€
-- Acrylic Box (Lasercut): 10€
+- LEDs: 5€
+- Acrylic Box (Lasercut): ?€
 - Rubber feet: <1€
 - USB Cable: 3€
 - Internal cables: <1€
 - (Optional) Carbon Vinyl Frontplate: 4€
+- (Optional) Pre-Soldering: 10€
+- (Optional) Complete pre-assembly: 10€ assembly + 10€ soldering
 
-Estimated total of set: ?€ excl. shipping
+Estimated total of set: ~55€ excl. shipping, carbon vinyl, pre-soldering, pre-assembly
 
 Please note that, as the box is still in development, the price may be subject to change before the release.
 
@@ -112,3 +115,11 @@ Code interaction with the host application using the new arduino base has not be
 For v2.8 I will try and integrate most LEDs, buttons, switches, selectors and rotary encoders directly on the PCB for even easier assembly. Only some chunky ones like the key switches should require external cabeling.
 
 It is highly possible that v2.8 as a release candidate will be available by the end of the year to be ordered and assembled. It should be a little cheaper even with the individually adressable RGBs as you will have to provide your own arduino nano :)
+
+# Changes in v2.10
+
+Switching over to through-hole components and an off-the-shelf arduino nano has proven to be a good move. Although soldering takes quite a while, with all the bending of resistors and the tiny LED pads, but the design has become way more simple, so much so that it could be reduced to a 2-layer PCB with two designs, meaning the board now splits in half and is connected via JST 6-pin connector. The split seperates the arduino and LEDs from the button inputs and its shift registers, for more convenient assembly in the box. This way, LEDs do not have to be connected individually in a chain but can instead be soldered directly onto the PCB, which then just mounts to the box. Without the button part getting in the way, this helps with the design of the box.
+
+A nice side effect is, that this device has now become a lot more hackable, since the components are not surface mount anymore and can easily be replaced or expanded without requiring changes to the PCB itself.
+
+With the arrival of the v2.9 version of the board, I have been able to test the library and arduino code with the chinese knockoff arduino nanos that I have ordered for use in the device. It took a while to figure out, but the serial controller seems to only have a buffer of 40 bytes which caused all sorts of havoc with controlling the LEDs. It also does not support updating the LEDs at a baud rate of 115200. Thankfully the nano can now easily be exchanged by a better one, should you require a faster baud rate or a larger serial buffer. For now I think a 3€ price tag for a nano is acceptable for the reduced specs. Admittedly it gets pretty hot when driving all LEDs at the same time at maximum brightness, but that may be a general issue. I expect that not all LEDs are at 100% brightness and turned on all the time, so that should be fine. A currently running stress test will show if it can handle the worst case scenario.
