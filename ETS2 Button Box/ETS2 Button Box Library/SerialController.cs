@@ -11,7 +11,7 @@ namespace ETS2_Button_Box_Library
     {
         // Current version, used to check against handshake for compatibility
         private const int VERSION_MAJOR = 2;
-        private const int VERSION_MINOR = 7;
+        private const int VERSION_MINOR = 10;
 
         private SerialPort buttonBoxPort;   // Serial connection to the button box arduino
 
@@ -164,14 +164,14 @@ namespace ETS2_Button_Box_Library
         /// <param name="minor">Minor version</param>
         private void handleVersion(int major, int minor)
         {
-            // Version 2.7 is exact match, do nothing
-            if (major == 2 && minor == 7)
+            // Version 2.10 is exact match, do nothing
+            if (major == VERSION_MAJOR && minor == VERSION_MINOR)
             {
                 return;
             }
 
             // Mismatch detected, invoke version mismatch event and calculate whether an update is required or not
-            VersionMismatch?.Invoke(major < 2 || (major >= 2 && minor < 7));
+            VersionMismatch?.Invoke(true);
         }
 
         /// <summary>

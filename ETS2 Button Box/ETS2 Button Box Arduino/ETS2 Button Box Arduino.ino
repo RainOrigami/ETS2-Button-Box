@@ -1,6 +1,6 @@
 ﻿#include <FastLED.h>
 
-#define VERSION "2.7"	// Version number sent as part of the handshake event
+#define VERSION "2.10"	// Version number sent as part of the handshake event
 
 #define BAUD_RATE 115200	// Use 115200 baud rate
 
